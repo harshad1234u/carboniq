@@ -12,6 +12,7 @@ SUPABASE_KEY = os.getenv("SUPABASE_SERVICE_ROLE_KEY")
 
 _supabase: Client | None = None
 
+
 def get_supabase() -> Client:
     """Initialize and return the Supabase client."""
     global _supabase

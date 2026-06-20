@@ -1,4 +1,5 @@
 """Tests for CarbonIQ Error Handlers."""
+
 import pytest
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
@@ -11,7 +12,6 @@ from utils.error_handlers import (
     ForbiddenError,
     register_error_handlers,
 )
-
 
 # Create a test app with error handlers registered
 _app = FastAPI()
@@ -123,9 +123,7 @@ class TestExceptionHierarchy:
         assert err.detail == {}
 
     def test_carboniq_error_custom(self):
-        err = CarbonIQError(
-            message="Custom", status_code=422, detail={"x": 1}
-        )
+        err = CarbonIQError(message="Custom", status_code=422, detail={"x": 1})
         assert err.status_code == 422
         assert err.message == "Custom"
         assert err.detail == {"x": 1}

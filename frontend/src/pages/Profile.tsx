@@ -24,6 +24,7 @@ export function Profile() {
 
   useEffect(() => {
     if (profile) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setFormData({
         name: profile.name || '',
         city: profile.city || '',
@@ -43,8 +44,8 @@ export function Profile() {
       await updateProfile(formData);
       setSuccessMsg('Profile updated successfully!');
       setTimeout(() => setSuccessMsg(''), 3000);
-    } catch (err: any) {
-      alert(err.message || 'Failed to update profile');
+    } catch (err: unknown) {
+      alert((err as Error).message || 'Failed to update profile');
     } finally {
       setIsSaving(false);
     }

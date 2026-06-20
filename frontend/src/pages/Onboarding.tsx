@@ -37,8 +37,10 @@ export function Onboarding() {
       console.log("Profile row verified via global state refresh");
       
       navigate('/dashboard');
-    } catch (err: any) {
-      alert(err.message || 'Failed to save profile');
+    } catch (err: unknown) {
+      console.error(err);
+      alert((err as Error).message || 'Failed to save profile. Please try again.');
+    } finally {
       setLoading(false);
     }
   };

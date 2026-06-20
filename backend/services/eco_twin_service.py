@@ -59,11 +59,13 @@ def calculate_eco_twin(
             pct = round((savings / current_footprint) * 100, 1)
         else:
             pct = 0.0
-        recommendation_impacts.append({
-            "title": rec.title,
-            "co2_saved": round(savings, 2),
-            "percentage_of_total": pct,
-        })
+        recommendation_impacts.append(
+            {
+                "title": rec.title,
+                "co2_saved": round(savings, 2),
+                "percentage_of_total": pct,
+            }
+        )
 
     return EcoTwinResponse(
         current_footprint=round(current_footprint, 2),

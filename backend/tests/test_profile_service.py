@@ -1,4 +1,5 @@
 """Tests for CarbonIQ Profile Service."""
+
 import pytest
 from unittest.mock import MagicMock, patch
 from services.profile_service import get_profile, create_profile, update_profile

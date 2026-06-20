@@ -16,7 +16,6 @@ from utils.emission_factors import (
     TRANSPORT_FACTORS,
 )
 
-
 # ---------------------------------------------------------------------------
 # Lookup table: action → estimated savings
 # Each entry has:
@@ -34,7 +33,10 @@ _ACTION_SAVINGS: dict[str, dict[str, Any]] = {
             2,
         ),
         "cost_savings_inr": round(
-            (COST_SAVINGS["fuel_per_km_inr"] - COST_SAVINGS["public_transport_per_km_inr"])
+            (
+                COST_SAVINGS["fuel_per_km_inr"]
+                - COST_SAVINGS["public_transport_per_km_inr"]
+            )
             * 15
             * 30,
             2,
@@ -98,8 +100,7 @@ _ACTION_SAVINGS: dict[str, dict[str, Any]] = {
     },
     "energy_efficient_appliances": {
         "co2_savings_kg": round(
-            50  # ~50 kWh/month saved
-            * ELECTRICITY_FACTOR_KG_PER_KWH,
+            50 * ELECTRICITY_FACTOR_KG_PER_KWH,  # ~50 kWh/month saved
             2,
         ),
         "cost_savings_inr": round(
@@ -149,7 +150,7 @@ def calculate_savings(
         else:
             raw_title = getattr(rec, "title", "")
             desc = getattr(rec, "description", "Apply this recommendation.")
-            
+
         title = raw_title.lower()
         matched = False
 
@@ -157,23 +158,29 @@ def calculate_savings(
             # Fuzzy match: check if any keyword from the action key appears
             keywords = action_key.replace("_", " ").split()
             if any(kw in title for kw in keywords):
-                results.append({
-                    "title": raw_title or action_key,
-                    "co2_savings_kg": max(0.0, savings["co2_savings_kg"]),
-                    "cost_savings_inr": max(0.0, savings["cost_savings_inr"]),
-                    "description": savings["description"],
-                })
+                results.append(
+                    {
+                        "title": raw_title or action_key,
+                        "co2_savings_kg": max(0.0, savings["co2_savings_kg"]),
+                        "cost_savings_inr": max(0.0, savings["cost_savings_inr"]),
+                        "description": savings["description"],
+                    }
+                )
                 matched = True
                 break
 
         if not matched:
             # Conservative default: 5% of current footprint, ₹200 savings
-            default_co2 = round(current_footprint * 0.05, 2) if current_footprint > 0 else 5.0
-            results.append({
-                "title": raw_title or "General improvement",
-                "co2_savings_kg": max(0.0, default_co2),
-                "cost_savings_inr": 200.0,
-                "description": desc,
-            })
+            default_co2 = (
+                round(current_footprint * 0.05, 2) if current_footprint > 0 else 5.0
+            )
+            results.append(
+                {
+                    "title": raw_title or "General improvement",
+                    "co2_savings_kg": max(0.0, default_co2),
+                    "cost_savings_inr": 200.0,
+                    "description": desc,
+                }
+            )
 
     return results

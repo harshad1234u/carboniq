@@ -19,30 +19,39 @@ class CarbonInput(BaseModel):
     All numeric fields are validated to be non-negative with reasonable caps.
     """
 
-    vehicle_type: str = Field(
-        ..., description="Primary vehicle/transport type."
-    )
+    vehicle_type: str = Field(..., description="Primary vehicle/transport type.")
     daily_travel_km: float = Field(
-        default=0.0, ge=0, le=500,
+        default=0.0,
+        ge=0,
+        le=500,
         description="Daily travel distance in km.",
     )
     electricity_kwh: float = Field(
-        default=0.0, ge=0, le=5000,
+        default=0.0,
+        ge=0,
+        le=5000,
         description="Monthly electricity consumption in kWh.",
     )
     ac_hours: float = Field(
-        default=0.0, ge=0, le=24,
+        default=0.0,
+        ge=0,
+        le=24,
         description="Average daily AC usage in hours.",
     )
     diet_type: str = Field(
-        ..., description="Dietary pattern.",
+        ...,
+        description="Dietary pattern.",
     )
     flights_short: int = Field(
-        default=0, ge=0, le=100,
+        default=0,
+        ge=0,
+        le=100,
         description="Number of short-haul flights per year.",
     )
     flights_long: int = Field(
-        default=0, ge=0, le=100,
+        default=0,
+        ge=0,
+        le=100,
         description="Number of long-haul flights per year.",
     )
 
@@ -82,24 +91,16 @@ class CarbonScore(BaseModel):
 class CarbonResult(BaseModel):
     """Full breakdown of a monthly carbon footprint calculation."""
 
-    transport_emissions: float = Field(
-        ..., description="Transport CO₂e (kg/month)."
-    )
+    transport_emissions: float = Field(..., description="Transport CO₂e (kg/month).")
     electricity_emissions: float = Field(
         ..., description="Electricity CO₂e (kg/month)."
     )
-    food_emissions: float = Field(
-        ..., description="Diet CO₂e (kg/month)."
-    )
+    food_emissions: float = Field(..., description="Diet CO₂e (kg/month).")
     flight_emissions: float = Field(
         ..., description="Flight CO₂e (kg/month, annualised)."
     )
-    total_emissions: float = Field(
-        ..., description="Total CO₂e (kg/month)."
-    )
-    carbon_score: CarbonScore = Field(
-        ..., description="Traffic-light score."
-    )
+    total_emissions: float = Field(..., description="Total CO₂e (kg/month).")
+    carbon_score: CarbonScore = Field(..., description="Traffic-light score.")
     impact_equivalents: dict[str, float] = Field(
         default_factory=dict,
         description="Relatable impact equivalents.",

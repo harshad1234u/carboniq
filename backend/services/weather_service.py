@@ -103,7 +103,9 @@ async def get_weather(city: str) -> WeatherData:
     except httpx.HTTPStatusError as exc:
         logger.warning(
             "OpenWeather HTTP %s for city '%s': %s",
-            exc.response.status_code, city, exc.response.text[:200],
+            exc.response.status_code,
+            city,
+            exc.response.text[:200],
         )
     except httpx.RequestError as exc:
         logger.warning("OpenWeather request failed for '%s': %s", city, exc)

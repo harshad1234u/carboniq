@@ -10,6 +10,9 @@ from utils.error_handlers import register_error_handlers, CarbonIQError
 from fastapi.exceptions import RequestValidationError
 from utils.config import load_settings, ConfigError
 from database.client import get_supabase
+from slowapi import _rate_limit_exceeded_handler
+from slowapi.errors import RateLimitExceeded
+from utils.rate_limit import limiter
 
 # Setup structured logging for Cloud Run
 logger = logging.getLogger()
@@ -44,6 +47,8 @@ app.add_middleware(
 
 # Exception handlers
 register_error_handlers(app)
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
 # Include routers
 app.include_router(profile_router)
@@ -53,21 +58,28 @@ app.include_router(dashboard_router)
 # Track readiness status
 is_ready = False
 
+
 @app.on_event("startup")
 async def startup_event():
     global is_ready
     try:
         load_settings()
-        logger.info("CarbonIQ Backend Started. All required environment variables loaded.", extra={"event": "startup_success"})
+        logger.info(
+            "CarbonIQ Backend Started. All required environment variables loaded.",
+            extra={"event": "startup_success"},
+        )
         is_ready = True
     except ConfigError as e:
         logger.error(f"Configuration Error: {e}", extra={"event": "startup_failure"})
         import sys
+
         sys.exit(1)
+
 
 @app.get("/health")
 def health_check():
     return {"status": "healthy"}
+
 
 @app.get("/health/startup")
 def startup_check(response: Response):
@@ -76,12 +88,13 @@ def startup_check(response: Response):
     response.status_code = status.HTTP_503_SERVICE_UNAVAILABLE
     return {"status": "starting"}
 
+
 @app.get("/health/readiness")
 def readiness_check(response: Response):
     if not is_ready:
         response.status_code = status.HTTP_503_SERVICE_UNAVAILABLE
         return {"status": "not_ready"}
-    
+
     # Check Supabase connectivity
     try:
         supabase = get_supabase()
@@ -90,6 +103,8 @@ def readiness_check(response: Response):
             raise Exception("Supabase client not initialized")
         return {"status": "ready", "database": "connected"}
     except Exception as e:
-        logger.error(f"Readiness probe failed: {e}", extra={"event": "readiness_failure"})
+        logger.error(
+            f"Readiness probe failed: {e}", extra={"event": "readiness_failure"}
+        )
         response.status_code = status.HTTP_503_SERVICE_UNAVAILABLE
         return {"status": "unhealthy", "reason": str(e)}

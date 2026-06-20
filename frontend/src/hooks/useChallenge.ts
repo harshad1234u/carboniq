@@ -20,14 +20,10 @@ export function useChallenge() {
   };
 
   const completeChallenge = async (id: string) => {
-    try {
-      const data = await api.post(`/challenges/${id}/complete`, {});
-      await fetchChallenges();
-      await fetchBadges();
-      return data;
-    } catch (err: any) {
-      throw err;
-    }
+    const res = await api.post(`/dashboard/challenges/${id}/complete`, {});
+    await fetchChallenges();
+    await fetchBadges();
+    return res;
   };
 
   const fetchBadges = async () => {

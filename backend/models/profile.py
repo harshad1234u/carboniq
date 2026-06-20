@@ -13,10 +13,10 @@ from pydantic import BaseModel, Field, field_validator
 
 from utils.emission_factors import ALLOWED_DIET_TYPES, ALLOWED_TRANSPORT_TYPES
 
-
 # ---------------------------------------------------------------------------
 # Auth models
 # ---------------------------------------------------------------------------
+
 
 class AuthSignup(BaseModel):
     """Payload for user registration."""
@@ -25,9 +25,7 @@ class AuthSignup(BaseModel):
     password: str = Field(
         ..., min_length=6, max_length=128, description="Password (min 6 chars)."
     )
-    name: str = Field(
-        ..., min_length=1, max_length=120, description="Display name."
-    )
+    name: str = Field(..., min_length=1, max_length=120, description="Display name.")
 
     @field_validator("email")
     @classmethod
@@ -72,27 +70,20 @@ class AuthLogin(BaseModel):
 # Profile models
 # ---------------------------------------------------------------------------
 
+
 class ProfileCreate(BaseModel):
     """Payload for creating / updating a user profile."""
 
-    name: str = Field(
-        ..., min_length=1, max_length=120, description="Display name."
-    )
-    email: Optional[str] = Field(
-        default=None, description="User email address."
-    )
+    name: str = Field(..., min_length=1, max_length=120, description="Display name.")
+    email: Optional[str] = Field(default=None, description="User email address.")
     city: str = Field(
         ..., min_length=1, max_length=100, description="City of residence."
     )
-    transport_type: str = Field(
-        ..., description="Primary transport mode."
-    )
+    transport_type: str = Field(..., description="Primary transport mode.")
     avg_travel_distance: float = Field(
         ..., ge=0, le=500, description="Average daily travel distance in km."
     )
-    diet_type: str = Field(
-        ..., description="Dietary pattern."
-    )
+    diet_type: str = Field(..., description="Dietary pattern.")
     household_size: int = Field(
         ..., ge=1, le=20, description="Number of household members."
     )
@@ -143,6 +134,4 @@ class ProfileResponse(BaseModel):
     diet_type: str = Field(default="", description="Dietary pattern.")
     household_size: int = Field(default=1, description="Household members.")
     eco_points: int = Field(default=0, description="Gamification points.")
-    created_at: Optional[str] = Field(
-        default=None, description="ISO timestamp."
-    )
+    created_at: Optional[str] = Field(default=None, description="ISO timestamp.")

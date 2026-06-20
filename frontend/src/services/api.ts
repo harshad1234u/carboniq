@@ -32,11 +32,11 @@ async function fetchWithAuth(endpoint: string, options: RequestInit = {}) {
 
 export const api = {
   get: (endpoint: string) => fetchWithAuth(endpoint),
-  post: (endpoint: string, data: any) => fetchWithAuth(endpoint, {
+  post: (endpoint: string, data: unknown) => fetchWithAuth(endpoint, {
     method: 'POST',
     body: JSON.stringify(data),
   }),
-  put: (endpoint: string, data: any) => fetchWithAuth(endpoint, {
+  put: (endpoint: string, data: unknown) => fetchWithAuth(endpoint, {
     method: 'PUT',
     body: JSON.stringify(data),
   }),

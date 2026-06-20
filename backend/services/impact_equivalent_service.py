@@ -29,9 +29,7 @@ def calculate_equivalents(kg_co2: float) -> dict[str, float]:
     if kg_co2 < 0:
         kg_co2 = 0.0
 
-    driving_km = round(
-        kg_co2 * IMPACT_EQUIVALENTS["driving_km_per_kg"], 1
-    )
+    driving_km = round(kg_co2 * IMPACT_EQUIVALENTS["driving_km_per_kg"], 1)
 
     smartphone_charges = round(
         kg_co2 * IMPACT_EQUIVALENTS["smartphone_charges_per_kg"], 1
@@ -44,9 +42,7 @@ def calculate_equivalents(kg_co2: float) -> dict[str, float]:
         else 0.0
     )
 
-    led_bulb_hours = round(
-        kg_co2 * IMPACT_EQUIVALENTS["led_hours_per_kg"], 1
-    )
+    led_bulb_hours = round(kg_co2 * IMPACT_EQUIVALENTS["led_hours_per_kg"], 1)
 
     return {
         "driving_km": max(0.0, driving_km),

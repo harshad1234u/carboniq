@@ -69,7 +69,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return () => subscription.unsubscribe();
   }, []);
 
-  const checkProfile = async (userId: string) => {
+  async function checkProfile(userId: string) {
     console.log("Profile lookup started for", userId);
     setLoading(true);
     setAuthError(null);

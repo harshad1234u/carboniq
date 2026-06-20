@@ -12,10 +12,10 @@ import html
 import re
 from typing import Sequence
 
-
 # ---------------------------------------------------------------------------
 # Numeric validation
 # ---------------------------------------------------------------------------
+
 
 def validate_positive_number(
     value: float | int,
@@ -38,9 +38,7 @@ def validate_positive_number(
     try:
         value = float(value)
     except (TypeError, ValueError):
-        raise ValueError(
-            f"{field_name} must be a number, got {type(value).__name__}."
-        )
+        raise ValueError(f"{field_name} must be a number, got {type(value).__name__}.")
 
     if value < 0:
         value = 0.0
@@ -53,6 +51,7 @@ def validate_positive_number(
 # ---------------------------------------------------------------------------
 # Enum / choice validation
 # ---------------------------------------------------------------------------
+
 
 def validate_string_enum(
     value: str,
@@ -90,9 +89,7 @@ def validate_string_enum(
 # Email validation
 # ---------------------------------------------------------------------------
 
-_EMAIL_RE = re.compile(
-    r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
-)
+_EMAIL_RE = re.compile(r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$")
 
 
 def validate_email(email: str) -> str:
@@ -123,9 +120,7 @@ def validate_email(email: str) -> str:
 # ---------------------------------------------------------------------------
 
 _HTML_TAG_RE = re.compile(r"<[^>]+>")
-_SCRIPT_RE = re.compile(
-    r"<script[\s\S]*?>[\s\S]*?</script>", re.IGNORECASE
-)
+_SCRIPT_RE = re.compile(r"<script[\s\S]*?>[\s\S]*?</script>", re.IGNORECASE)
 
 
 def sanitize_string(text: str, max_length: int = 5_000) -> str:

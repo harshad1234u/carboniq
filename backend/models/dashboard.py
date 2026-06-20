@@ -17,12 +17,8 @@ class HistoryEntry(BaseModel):
     """A single historical carbon-footprint record."""
 
     recorded_date: str = Field(..., description="ISO date of the entry.")
-    total_emissions: float = Field(
-        ..., description="Total CO₂e for that period (kg)."
-    )
-    carbon_score: int = Field(
-        ..., ge=0, le=100, description="0–100 score."
-    )
+    total_emissions: float = Field(..., description="Total CO₂e for that period (kg).")
+    carbon_score: int = Field(..., ge=0, le=100, description="0–100 score.")
     carbon_level: str = Field(..., description="Level label.")
 
 

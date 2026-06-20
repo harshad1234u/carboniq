@@ -8,9 +8,18 @@ import { ErrorState } from '../components/ErrorState';
 import { ArrowRight, Sparkles } from 'lucide-react';
 import { formatCO2 } from '../utils/formatters';
 
+type EcoTwinData = {
+  current_footprint: number;
+  predicted_footprint: number;
+  reduction_percentage: number;
+  current_equivalents: Record<string, number>;
+  predicted_equivalents: Record<string, number>;
+  recommendation_impacts: Array<{ title: string; co2_saved: number }>;
+};
+
 export function EcoTwin() {
   const { getEcoTwin, loading, error } = useCarbon();
-  const [data, setData] = useState<any>(null);
+  const [data, setData] = useState<EcoTwinData | null>(null);
 
   const fetchTwin = async () => {
     try {
@@ -22,6 +31,7 @@ export function EcoTwin() {
   };
 
   useEffect(() => {
+     
     fetchTwin();
   }, []);
 
@@ -66,7 +76,7 @@ export function EcoTwin() {
         <div className="pt-8">
           <h3 className="text-lg font-medium text-slate-200 mb-4">How you get there:</h3>
           <div className="grid gap-3">
-            {data.recommendation_impacts.map((rec: any, idx: number) => (
+            {data.recommendation_impacts.map((rec: {title: string; co2_saved: number}, idx: number) => (
               <Card key={idx} className="bg-slate-900/50 border-slate-800">
                 <CardContent className="p-4 flex items-center justify-between">
                   <span className="font-medium text-slate-300">{rec.title}</span>

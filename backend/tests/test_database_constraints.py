@@ -6,7 +6,7 @@ from utils.config import settings
 def _table_exists(client, table_name: str) -> bool:
     """Check if a table is accessible (exists in Supabase schema cache)."""
     try:
-        client.table(table_name).select('*').limit(0).execute()
+        client.table(table_name).select("*").limit(0).execute()
         return True
     except Exception:
         return False

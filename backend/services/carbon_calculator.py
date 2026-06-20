@@ -39,16 +39,11 @@ def calculate_emissions(carbon_input: CarbonInput) -> CarbonResult:
     transport_emissions = transport_factor * carbon_input.daily_travel_km * 30
 
     # --- Electricity ---
-    electricity_emissions = (
-        carbon_input.electricity_kwh * ELECTRICITY_FACTOR_KG_PER_KWH
-    )
+    electricity_emissions = carbon_input.electricity_kwh * ELECTRICITY_FACTOR_KG_PER_KWH
 
     # --- AC (additional electricity from air-conditioning) ---
     ac_emissions = (
-        carbon_input.ac_hours
-        * AC_KWH_PER_HOUR
-        * ELECTRICITY_FACTOR_KG_PER_KWH
-        * 30
+        carbon_input.ac_hours * AC_KWH_PER_HOUR * ELECTRICITY_FACTOR_KG_PER_KWH * 30
     )
 
     # Add AC emissions into the electricity bucket

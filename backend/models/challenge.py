@@ -33,9 +33,7 @@ class Badge(BaseModel):
 
     id: str = Field(default="", description="Badge UUID.")
     badge_name: str = Field(..., description="Badge name.")
-    badge_description: str = Field(
-        ..., description="What the badge recognises."
-    )
+    badge_description: str = Field(..., description="What the badge recognises.")
     earned_at: Optional[str] = Field(
         default=None, description="ISO timestamp when earned."
     )

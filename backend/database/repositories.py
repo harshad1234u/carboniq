@@ -4,6 +4,7 @@ from database.client import get_supabase
 
 logger = logging.getLogger(__name__)
 
+
 class ProfileRepository:
     @staticmethod
     def get_profile(user_id: str) -> Optional[Dict[str, Any]]:
@@ -22,8 +23,11 @@ class ProfileRepository:
     @staticmethod
     def update_profile(user_id: str, profile_data: Dict[str, Any]) -> Dict[str, Any]:
         client = get_supabase()
-        response = client.table("profiles").update(profile_data).eq("id", user_id).execute()
+        response = (
+            client.table("profiles").update(profile_data).eq("id", user_id).execute()
+        )
         return response.data[0]
+
 
 class CarbonRepository:
     @staticmethod
@@ -35,16 +39,31 @@ class CarbonRepository:
     @staticmethod
     def get_history(user_id: str, limit: int = 10) -> List[Dict[str, Any]]:
         client = get_supabase()
-        response = client.table("carbon_entries").select("*").eq("profile_id", user_id).order("created_at", desc=True).limit(limit).execute()
+        response = (
+            client.table("carbon_entries")
+            .select("*")
+            .eq("profile_id", user_id)
+            .order("created_at", desc=True)
+            .limit(limit)
+            .execute()
+        )
         return response.data
 
     @staticmethod
     def get_latest(user_id: str) -> Optional[Dict[str, Any]]:
         client = get_supabase()
-        response = client.table("carbon_entries").select("*").eq("profile_id", user_id).order("created_at", desc=True).limit(1).execute()
+        response = (
+            client.table("carbon_entries")
+            .select("*")
+            .eq("profile_id", user_id)
+            .order("created_at", desc=True)
+            .limit(1)
+            .execute()
+        )
         if response.data:
             return response.data[0]
         return None
+
 
 class RecommendationRepository:
     @staticmethod
@@ -56,10 +75,18 @@ class RecommendationRepository:
     @staticmethod
     def get_latest(user_id: str) -> Optional[Dict[str, Any]]:
         client = get_supabase()
-        response = client.table("recommendations").select("*").eq("profile_id", user_id).order("created_at", desc=True).limit(1).execute()
+        response = (
+            client.table("recommendations")
+            .select("*")
+            .eq("profile_id", user_id)
+            .order("created_at", desc=True)
+            .limit(1)
+            .execute()
+        )
         if response.data:
             return response.data[0]
         return None
+
 
 class EcoPredictionRepository:
     @staticmethod
@@ -71,10 +98,18 @@ class EcoPredictionRepository:
     @staticmethod
     def get_latest(user_id: str) -> Optional[Dict[str, Any]]:
         client = get_supabase()
-        response = client.table("eco_predictions").select("*").eq("profile_id", user_id).order("created_at", desc=True).limit(1).execute()
+        response = (
+            client.table("eco_predictions")
+            .select("*")
+            .eq("profile_id", user_id)
+            .order("created_at", desc=True)
+            .limit(1)
+            .execute()
+        )
         if response.data:
             return response.data[0]
         return None
+
 
 class ChallengeRepository:
     @staticmethod
@@ -87,14 +122,28 @@ class ChallengeRepository:
     def get_current(user_id: str) -> List[Dict[str, Any]]:
         client = get_supabase()
         # simplified check for current week
-        response = client.table("challenges").select("*").eq("profile_id", user_id).order("created_at", desc=True).limit(3).execute()
+        response = (
+            client.table("challenges")
+            .select("*")
+            .eq("profile_id", user_id)
+            .order("created_at", desc=True)
+            .limit(3)
+            .execute()
+        )
         return response.data
 
     @staticmethod
     def complete_challenge(challenge_id: str, user_id: str) -> Dict[str, Any]:
         client = get_supabase()
-        response = client.table("challenges").update({"is_completed": True}).eq("id", challenge_id).eq("profile_id", user_id).execute()
+        response = (
+            client.table("challenges")
+            .update({"is_completed": True})
+            .eq("id", challenge_id)
+            .eq("profile_id", user_id)
+            .execute()
+        )
         return response.data[0]
+
 
 class BadgeRepository:
     @staticmethod
@@ -106,5 +155,11 @@ class BadgeRepository:
     @staticmethod
     def get_all(user_id: str) -> List[Dict[str, Any]]:
         client = get_supabase()
-        response = client.table("badges").select("*").eq("profile_id", user_id).order("earned_at", desc=True).execute()
+        response = (
+            client.table("badges")
+            .select("*")
+            .eq("profile_id", user_id)
+            .order("earned_at", desc=True)
+            .execute()
+        )
         return response.data

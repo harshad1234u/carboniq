@@ -1,4 +1,5 @@
 """Tests for CarbonIQ Challenge Service."""
+
 import pytest
 from services.challenge_service import (
     generate_weekly_challenges,
@@ -7,10 +8,10 @@ from services.challenge_service import (
     _CHALLENGE_POOL,
 )
 
-
 # ---------------------------------------------------------------------------
 # generate_weekly_challenges
 # ---------------------------------------------------------------------------
+
 
 class TestGenerateWeeklyChallenges:
     """Tests for weekly challenge generation."""
@@ -24,19 +25,25 @@ class TestGenerateWeeklyChallenges:
         profile = {"transport_type": "car_petrol", "diet_type": "average"}
         challenges = generate_weekly_challenges(profile)
         # First challenge should be transport-related for car users
-        transport_titles = {ch["title"] for ch in _CHALLENGE_POOL if ch["category"] == "transport"}
+        transport_titles = {
+            ch["title"] for ch in _CHALLENGE_POOL if ch["category"] == "transport"
+        }
         assert challenges[0].title in transport_titles
 
     def test_motorcycle_user_gets_transport_challenge(self):
         profile = {"transport_type": "motorcycle", "diet_type": "vegetarian"}
         challenges = generate_weekly_challenges(profile)
-        transport_titles = {ch["title"] for ch in _CHALLENGE_POOL if ch["category"] == "transport"}
+        transport_titles = {
+            ch["title"] for ch in _CHALLENGE_POOL if ch["category"] == "transport"
+        }
         assert challenges[0].title in transport_titles
 
     def test_meat_heavy_user_gets_food_challenge(self):
         profile = {"transport_type": "bicycle", "diet_type": "meat_heavy"}
         challenges = generate_weekly_challenges(profile)
-        food_titles = {ch["title"] for ch in _CHALLENGE_POOL if ch["category"] == "food"}
+        food_titles = {
+            ch["title"] for ch in _CHALLENGE_POOL if ch["category"] == "food"
+        }
         # At least one challenge should be food-related
         food_found = any(c.title in food_titles for c in challenges)
         assert food_found
@@ -94,12 +101,14 @@ class TestGenerateWeeklyChallenges:
 # _get_week_start
 # ---------------------------------------------------------------------------
 
+
 class TestGetWeekStart:
     def test_returns_iso_date_string(self):
         result = _get_week_start()
         assert len(result) == 10
         # Should parse as a date
         from datetime import datetime
+
         parsed = datetime.fromisoformat(result)
         assert parsed.weekday() == 0  # Monday
 
@@ -108,18 +117,15 @@ class TestGetWeekStart:
 # check_badge_eligibility
 # ---------------------------------------------------------------------------
 
+
 class TestCheckBadgeEligibility:
     def test_first_calculation_badge(self):
-        badges = check_badge_eligibility(
-            completed_challenges=0, total_calculations=1
-        )
+        badges = check_badge_eligibility(completed_challenges=0, total_calculations=1)
         names = [b.badge_name for b in badges]
         assert "First Step" in names
 
     def test_no_badge_zero_calculations(self):
-        badges = check_badge_eligibility(
-            completed_challenges=0, total_calculations=0
-        )
+        badges = check_badge_eligibility(completed_challenges=0, total_calculations=0)
         names = [b.badge_name for b in badges]
         assert "First Step" not in names
 
@@ -134,51 +140,37 @@ class TestCheckBadgeEligibility:
         assert "Eco Warrior" not in names
 
     def test_green_hero_badge_low_score(self):
-        badges = check_badge_eligibility(
-            completed_challenges=0, carbon_score=25
-        )
+        badges = check_badge_eligibility(completed_challenges=0, carbon_score=25)
         names = [b.badge_name for b in badges]
         assert "Green Hero" in names
 
     def test_no_green_hero_high_score(self):
-        badges = check_badge_eligibility(
-            completed_challenges=0, carbon_score=50
-        )
+        badges = check_badge_eligibility(completed_challenges=0, carbon_score=50)
         names = [b.badge_name for b in badges]
         assert "Green Hero" not in names
 
     def test_consistency_king_4_weeks(self):
-        badges = check_badge_eligibility(
-            completed_challenges=0, consecutive_weeks=4
-        )
+        badges = check_badge_eligibility(completed_challenges=0, consecutive_weeks=4)
         names = [b.badge_name for b in badges]
         assert "Consistency King" in names
 
     def test_diet_champion_vegetarian(self):
-        badges = check_badge_eligibility(
-            completed_challenges=0, diet_type="vegetarian"
-        )
+        badges = check_badge_eligibility(completed_challenges=0, diet_type="vegetarian")
         names = [b.badge_name for b in badges]
         assert "Diet Champion" in names
 
     def test_diet_champion_vegan(self):
-        badges = check_badge_eligibility(
-            completed_challenges=0, diet_type="vegan"
-        )
+        badges = check_badge_eligibility(completed_challenges=0, diet_type="vegan")
         names = [b.badge_name for b in badges]
         assert "Diet Champion" in names
 
     def test_no_diet_champion_meat_heavy(self):
-        badges = check_badge_eligibility(
-            completed_challenges=0, diet_type="meat_heavy"
-        )
+        badges = check_badge_eligibility(completed_challenges=0, diet_type="meat_heavy")
         names = [b.badge_name for b in badges]
         assert "Diet Champion" not in names
 
     def test_zero_waste_hero_3_waste_challenges(self):
-        badges = check_badge_eligibility(
-            completed_challenges=3, waste_challenges=3
-        )
+        badges = check_badge_eligibility(completed_challenges=3, waste_challenges=3)
         names = [b.badge_name for b in badges]
         assert "Zero Waste Hero" in names
 
@@ -202,8 +194,6 @@ class TestCheckBadgeEligibility:
         assert len(badges) == 6
 
     def test_badge_has_earned_at_timestamp(self):
-        badges = check_badge_eligibility(
-            completed_challenges=0, total_calculations=1
-        )
+        badges = check_badge_eligibility(completed_challenges=0, total_calculations=1)
         assert len(badges) > 0
         assert badges[0].earned_at is not None

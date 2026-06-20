@@ -1,4 +1,4 @@
-import { Activity, Car, Home, Leaf, ShieldAlert, Sparkles, Trophy, Settings } from 'lucide-react';
+import { Activity, Home, ShieldAlert, Sparkles, Trophy, Settings } from 'lucide-react';
 
 export const VEHICLE_TYPES = [
   { value: 'car_petrol', label: 'Car (Petrol)' },

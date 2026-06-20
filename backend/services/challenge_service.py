@@ -236,10 +236,7 @@ def generate_weekly_challenges(
         if len(selected) >= 3:
             break
         for ch in _CHALLENGE_POOL:
-            if (
-                ch["category"] == category
-                and ch["title"] not in used_titles
-            ):
+            if ch["category"] == category and ch["title"] not in used_titles:
                 selected.append(_to_challenge(ch, week_start))
                 used_titles.add(ch["title"])
                 break
@@ -290,7 +287,11 @@ def check_badge_eligibility(
             earned.append(_to_badge(badge_def, now))
         elif condition == "5_challenges" and completed_challenges >= 5:
             earned.append(_to_badge(badge_def, now))
-        elif condition == "score_below_30" and carbon_score is not None and carbon_score < 30:
+        elif (
+            condition == "score_below_30"
+            and carbon_score is not None
+            and carbon_score < 30
+        ):
             earned.append(_to_badge(badge_def, now))
         elif condition == "4_weeks" and consecutive_weeks >= 4:
             earned.append(_to_badge(badge_def, now))

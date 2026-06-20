@@ -1,4 +1,5 @@
 """Tests for Carbon API eco-twin and AI coach endpoints with full mocking."""
+
 import pytest
 from unittest.mock import patch, AsyncMock, MagicMock
 from fastapi.testclient import TestClient
@@ -18,6 +19,7 @@ def _override_auth():
 @pytest.fixture(autouse=True)
 def _patch_auth():
     from api.profile import get_current_user
+
     app.dependency_overrides[get_current_user] = _override_auth
     yield
     app.dependency_overrides.clear()
@@ -40,9 +42,27 @@ _MOCK_RECS = {
     "profile_id": "test-user-uuid",
     "entry_id": "entry-uuid",
     "recommendations": [
-        {"title": "Rec 1", "description": "Desc 1", "co2_savings_kg": 10.0, "cost_savings_inr": 100.0, "difficulty": "easy"},
-        {"title": "Rec 2", "description": "Desc 2", "co2_savings_kg": 20.0, "cost_savings_inr": 200.0, "difficulty": "medium"},
-        {"title": "Rec 3", "description": "Desc 3", "co2_savings_kg": 30.0, "cost_savings_inr": 300.0, "difficulty": "hard"},
+        {
+            "title": "Rec 1",
+            "description": "Desc 1",
+            "co2_savings_kg": 10.0,
+            "cost_savings_inr": 100.0,
+            "difficulty": "easy",
+        },
+        {
+            "title": "Rec 2",
+            "description": "Desc 2",
+            "co2_savings_kg": 20.0,
+            "cost_savings_inr": 200.0,
+            "difficulty": "medium",
+        },
+        {
+            "title": "Rec 3",
+            "description": "Desc 3",
+            "co2_savings_kg": 30.0,
+            "cost_savings_inr": 300.0,
+            "difficulty": "hard",
+        },
     ],
 }
 
@@ -53,18 +73,48 @@ class TestAiCoachEndpointFull:
     @patch("api.carbon.get_profile")
     @patch("api.carbon.get_weather", new_callable=AsyncMock)
     @patch("api.carbon.get_recommendations", new_callable=AsyncMock)
-    def test_successful_ai_coach(self, mock_recs, mock_weather, mock_prof, mock_carbon, mock_rec_repo):
+    def test_successful_ai_coach(
+        self, mock_recs, mock_weather, mock_prof, mock_carbon, mock_rec_repo
+    ):
         from models.ai_coach import Recommendation, AiCoachResponse
         from models.weather import WeatherData
 
-        mock_prof.return_value = {"city": "Mumbai", "transport_type": "car_petrol", "diet_type": "average"}
+        mock_prof.return_value = {
+            "city": "Mumbai",
+            "transport_type": "car_petrol",
+            "diet_type": "average",
+        }
         mock_carbon.get_latest.return_value = _MOCK_ENTRY
-        mock_weather.return_value = WeatherData(city="Mumbai", temperature=30.0, description="Clear", humidity=60, icon="01d")
+        mock_weather.return_value = WeatherData(
+            city="Mumbai",
+            temperature=30.0,
+            description="Clear",
+            humidity=60,
+            icon="01d",
+        )
         mock_recs.return_value = AiCoachResponse(
             recommendations=[
-                Recommendation(title="R1", description="D1", co2_savings_kg=10.0, cost_savings_inr=100.0, difficulty="easy"),
-                Recommendation(title="R2", description="D2", co2_savings_kg=20.0, cost_savings_inr=200.0, difficulty="medium"),
-                Recommendation(title="R3", description="D3", co2_savings_kg=30.0, cost_savings_inr=300.0, difficulty="hard"),
+                Recommendation(
+                    title="R1",
+                    description="D1",
+                    co2_savings_kg=10.0,
+                    cost_savings_inr=100.0,
+                    difficulty="easy",
+                ),
+                Recommendation(
+                    title="R2",
+                    description="D2",
+                    co2_savings_kg=20.0,
+                    cost_savings_inr=200.0,
+                    difficulty="medium",
+                ),
+                Recommendation(
+                    title="R3",
+                    description="D3",
+                    co2_savings_kg=30.0,
+                    cost_savings_inr=300.0,
+                    difficulty="hard",
+                ),
             ],
             total_co2_savings=60.0,
             total_cost_savings=600.0,
@@ -101,7 +151,7 @@ class TestEcoTwinEndpoint:
     def test_no_carbon_entry(self, mock_carbon, mock_rec_repo):
         mock_carbon.get_latest.return_value = None
         resp = client.post("/api/carbon/eco-twin", json={"entry_id": "entry-uuid"})
-        assert resp.status_code == 500
+        assert resp.status_code == 400
 
     @patch("api.carbon.RecommendationRepository")
     @patch("api.carbon.CarbonRepository")
@@ -109,22 +159,25 @@ class TestEcoTwinEndpoint:
         mock_carbon.get_latest.return_value = _MOCK_ENTRY
         mock_rec_repo.get_latest.return_value = None
         resp = client.post("/api/carbon/eco-twin", json={"entry_id": "entry-uuid"})
-        assert resp.status_code == 500
+        assert resp.status_code == 400
 
 
 class TestCalculateWithDbError:
     @patch("api.carbon.CarbonRepository")
     def test_db_save_failure_returns_400(self, mock_repo):
         mock_repo.create_entry.side_effect = Exception("DB write failed")
-        resp = client.post("/api/carbon/calculate", json={
-            "vehicle_type": "car_petrol",
-            "daily_travel_km": 20,
-            "electricity_kwh": 300,
-            "ac_hours": 4,
-            "diet_type": "average",
-            "flights_short": 0,
-            "flights_long": 0,
-        })
+        resp = client.post(
+            "/api/carbon/calculate",
+            json={
+                "vehicle_type": "car_petrol",
+                "daily_travel_km": 20,
+                "electricity_kwh": 300,
+                "ac_hours": 4,
+                "diet_type": "average",
+                "flights_short": 0,
+                "flights_long": 0,
+            },
+        )
         assert resp.status_code == 400
 
 
@@ -133,8 +186,14 @@ class TestDashboardCompleteChallengeEndpoint:
     @patch("api.dashboard.ChallengeRepository")
     @patch("api.dashboard.get_profile")
     @patch("services.profile_service.ProfileRepository")
-    def test_complete_challenge_success(self, mock_repo, mock_prof, mock_chal, mock_badge):
-        mock_chal.complete_challenge.return_value = {"id": "ch-1", "eco_points": 10, "is_completed": True}
+    def test_complete_challenge_success(
+        self, mock_repo, mock_prof, mock_chal, mock_badge
+    ):
+        mock_chal.complete_challenge.return_value = {
+            "id": "ch-1",
+            "eco_points": 10,
+            "is_completed": True,
+        }
         mock_prof.return_value = {"eco_points": 40}
         mock_badge.get_all.return_value = []
         mock_repo.update_profile.return_value = {}
@@ -148,8 +207,14 @@ class TestDashboardCompleteChallengeEndpoint:
     @patch("api.dashboard.ChallengeRepository")
     @patch("api.dashboard.get_profile")
     @patch("services.profile_service.ProfileRepository")
-    def test_complete_challenge_awards_badge_at_50_points(self, mock_repo, mock_prof, mock_chal, mock_badge):
-        mock_chal.complete_challenge.return_value = {"id": "ch-1", "eco_points": 10, "is_completed": True}
+    def test_complete_challenge_awards_badge_at_50_points(
+        self, mock_repo, mock_prof, mock_chal, mock_badge
+    ):
+        mock_chal.complete_challenge.return_value = {
+            "id": "ch-1",
+            "eco_points": 10,
+            "is_completed": True,
+        }
         mock_prof.return_value = {"eco_points": 45}
         mock_badge.get_all.return_value = []
         mock_badge.create.return_value = {}

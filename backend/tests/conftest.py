@@ -1,6 +1,7 @@
 import pytest
 from models.calculator import CarbonInput
 
+
 @pytest.fixture
 def base_input():
     return CarbonInput(
@@ -10,5 +11,5 @@ def base_input():
         ac_hours=0,
         diet_type="average",
         flights_short=0,
-        flights_long=0
+        flights_long=0,
     )

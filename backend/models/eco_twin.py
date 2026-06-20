@@ -26,9 +26,7 @@ class EcoTwinRequest(BaseModel):
 class EcoTwinResponse(BaseModel):
     """Predicted footprint comparison after applying recommendations."""
 
-    current_footprint: float = Field(
-        ..., description="Current monthly CO₂e in kg."
-    )
+    current_footprint: float = Field(..., description="Current monthly CO₂e in kg.")
     predicted_footprint: float = Field(
         ..., description="Predicted monthly CO₂e after improvements."
     )
