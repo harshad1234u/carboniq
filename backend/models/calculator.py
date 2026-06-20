@@ -15,8 +15,13 @@ from utils.emission_factors import ALLOWED_DIET_TYPES, ALLOWED_TRANSPORT_TYPES
 
 class CarbonInput(BaseModel):
     """User-supplied data for a carbon footprint calculation.
-
+    
     All numeric fields are validated to be non-negative with reasonable caps.
+
+    Args:
+
+    Returns:
+
     """
 
     vehicle_type: str = Field(..., description="Primary vehicle/transport type.")
@@ -58,7 +63,14 @@ class CarbonInput(BaseModel):
     @field_validator("vehicle_type")
     @classmethod
     def validate_vehicle(cls, v: str) -> str:
-        """Vehicle type must be in the allowed transport set."""
+        """Vehicle type must be in the allowed transport set.
+
+        Args:
+          v: str: 
+
+        Returns:
+
+        """
         normalised = v.strip().lower()
         if normalised not in ALLOWED_TRANSPORT_TYPES:
             raise ValueError(
@@ -70,7 +82,14 @@ class CarbonInput(BaseModel):
     @field_validator("diet_type")
     @classmethod
     def validate_diet(cls, v: str) -> str:
-        """Diet type must be in the allowed set."""
+        """Diet type must be in the allowed set.
+
+        Args:
+          v: str: 
+
+        Returns:
+
+        """
         normalised = v.strip().lower()
         if normalised not in ALLOWED_DIET_TYPES:
             raise ValueError(

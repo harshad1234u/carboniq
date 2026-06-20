@@ -180,7 +180,7 @@ _BADGE_DEFINITIONS: list[dict[str, str]] = [
 
 
 def _get_week_start() -> str:
-    """Return the ISO date string for the start (Monday) of the current week."""
+    """ """
     today = datetime.utcnow().date()
     monday = today - timedelta(days=today.weekday())
     return monday.isoformat()
@@ -191,18 +191,22 @@ def generate_weekly_challenges(
     footprint: float | None = None,
 ) -> list[Challenge]:
     """Select 3 personalised challenges for the current week.
-
+    
     Selection logic:
         1. If the user drives (car/motorcycle), prioritise transport challenges.
         2. If the user has a meat-heavy diet, prioritise food challenges.
         3. Fill remaining slots from energy and general challenges.
 
     Args:
-        profile: User profile dict (must contain ``transport_type``, ``diet_type``).
-        footprint: Optional current monthly footprint for scoring priority.
+      profile: User profile dict (must contain ``transport_type``, ``diet_type``).
+      footprint: Optional current monthly footprint for scoring priority.
+      profile: dict[str: 
+      Any]: 
+      footprint: float | None:  (Default value = None)
 
     Returns:
-        A list of 3 ``Challenge`` objects for the current week.
+      : A list of 3 ``Challenge`` objects for the current week.
+
     """
     transport_type = profile.get("transport_type", "").lower()
     diet_type = profile.get("diet_type", "").lower()
@@ -245,7 +249,16 @@ def generate_weekly_challenges(
 
 
 def _to_challenge(pool_entry: dict[str, Any], week_start: str) -> Challenge:
-    """Convert a pool entry dict into a ``Challenge`` model instance."""
+    """Convert a pool entry dict into a ``Challenge`` model instance.
+
+    Args:
+      pool_entry: dict[str: 
+      Any]: 
+      week_start: str: 
+
+    Returns:
+
+    """
     return Challenge(
         id=str(uuid.uuid4()),
         title=pool_entry["title"],
@@ -267,15 +280,22 @@ def check_badge_eligibility(
     """Check which badges the user is newly eligible for.
 
     Args:
-        completed_challenges: Total completed challenges.
-        carbon_score: Latest carbon score (0–100).
-        total_calculations: Number of carbon calculations performed.
-        diet_type: Current diet type.
-        consecutive_weeks: Consecutive weeks of tracking.
-        waste_challenges: Completed waste-category challenges.
+      completed_challenges: Total completed challenges.
+      carbon_score: Latest carbon score (0–100).
+      total_calculations: Number of carbon calculations performed.
+      diet_type: Current diet type.
+      consecutive_weeks: Consecutive weeks of tracking.
+      waste_challenges: Completed waste-category challenges.
+      completed_challenges: int: 
+      carbon_score: int | None:  (Default value = None)
+      total_calculations: int:  (Default value = 0)
+      diet_type: str:  (Default value = "")
+      consecutive_weeks: int:  (Default value = 0)
+      waste_challenges: int:  (Default value = 0)
 
     Returns:
-        A list of ``Badge`` objects the user has just earned.
+      : A list of ``Badge`` objects the user has just earned.
+
     """
     earned: list[Badge] = []
     now = datetime.utcnow().isoformat()
@@ -304,7 +324,16 @@ def check_badge_eligibility(
 
 
 def _to_badge(badge_def: dict[str, str], earned_at: str) -> Badge:
-    """Convert a badge definition dict into a ``Badge`` model instance."""
+    """Convert a badge definition dict into a ``Badge`` model instance.
+
+    Args:
+      badge_def: dict[str: 
+      str]: 
+      earned_at: str: 
+
+    Returns:
+
+    """
     return Badge(
         id=str(uuid.uuid4()),
         badge_name=badge_def["badge_name"],

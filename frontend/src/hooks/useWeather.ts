@@ -13,7 +13,7 @@ export function useWeather() {
     try {
       const data = await api.get(`/carbon/weather/${encodeURIComponent(city)}`);
       setWeather(data);
-    } catch (err: any) {
+    } catch (err) {
       setError(err.message || 'Failed to load weather');
     } finally {
       setLoading(false);

@@ -25,13 +25,7 @@ logger = logging.getLogger("carboniq.errors")
 
 
 class CarbonIQError(Exception):
-    """Base exception for all CarbonIQ application errors.
-
-    Attributes:
-        message: A human-readable description of the error.
-        status_code: HTTP status code to return (default 400).
-        detail: Optional additional detail dict.
-    """
+    """Base exception for all CarbonIQ application errors."""
 
     def __init__(
         self,
@@ -39,6 +33,7 @@ class CarbonIQError(Exception):
         status_code: int = 400,
         detail: dict[str, Any] | None = None,
     ) -> None:
+        """Docstring."""
         super().__init__(message)
         self.message = message
         self.status_code = status_code
@@ -46,9 +41,10 @@ class CarbonIQError(Exception):
 
 
 class NotFoundError(CarbonIQError):
-    """Raised when a requested resource does not exist."""
+    """ """
 
     def __init__(self, resource: str = "Resource") -> None:
+        """Docstring."""
         super().__init__(
             message=f"{resource} not found.",
             status_code=404,
@@ -56,16 +52,18 @@ class NotFoundError(CarbonIQError):
 
 
 class AuthenticationError(CarbonIQError):
-    """Raised when authentication fails."""
+    """ """
 
     def __init__(self, message: str = "Authentication failed.") -> None:
+        """Docstring."""
         super().__init__(message=message, status_code=401)
 
 
 class ForbiddenError(CarbonIQError):
-    """Raised when the user lacks permission."""
+    """ """
 
     def __init__(self, message: str = "Access denied.") -> None:
+        """Docstring."""
         super().__init__(message=message, status_code=403)
 
 
@@ -145,7 +143,11 @@ def register_error_handlers(app: FastAPI) -> None:
     """Attach all CarbonIQ exception handlers to *app*.
 
     Args:
-        app: The FastAPI application instance.
+      app: The FastAPI application instance.
+      app: FastAPI: 
+
+    Returns:
+
     """
     app.add_exception_handler(CarbonIQError, _carboniq_error_handler)  # type: ignore[arg-type]
     app.add_exception_handler(ValidationError, _validation_error_handler)  # type: ignore[arg-type]

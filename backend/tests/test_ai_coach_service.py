@@ -10,6 +10,7 @@ from utils.config import settings
 
 @pytest.fixture(autouse=True)
 def setup_ai_coach_test():
+    """ """
     original_key = settings.gemini_api_key
     object.__setattr__(settings, "gemini_api_key", "fake_key")
     yield
@@ -17,6 +18,7 @@ def setup_ai_coach_test():
 
 
 def _get_mock_footprint():
+    """ """
     return CarbonResult(
         transport_emissions=100.0,
         electricity_emissions=200.0,  # Highest

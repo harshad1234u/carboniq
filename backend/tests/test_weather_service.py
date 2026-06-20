@@ -6,6 +6,7 @@ from utils.config import settings
 
 @pytest.fixture(autouse=True)
 def setup_weather_test():
+    """ """
     clear_cache()
     original_key = settings.openweather_api_key
     object.__setattr__(settings, "openweather_api_key", "fake_key")
@@ -35,7 +36,9 @@ async def test_get_weather_fallback_on_exception(mocker):
 @pytest.mark.asyncio
 async def test_get_weather_success(mocker):
     class MockResponse:
+        """ """
         def json(self):
+            """ """
             return {
                 "name": "Delhi",
                 "main": {"temp": 30.5, "humidity": 70},
@@ -43,6 +46,7 @@ async def test_get_weather_success(mocker):
             }
 
         def raise_for_status(self):
+            """ """
             pass
 
     mocker.patch("httpx.AsyncClient.get", return_value=MockResponse())

@@ -1,3 +1,4 @@
+"""Module docstring."""
 import logging
 from typing import List
 from fastapi import APIRouter, Depends, HTTPException
@@ -16,6 +17,7 @@ router = APIRouter(prefix="/api")
 
 @router.get("/dashboard/summary", response_model=DashboardSummary)
 async def get_dashboard_summary(user=Depends(get_current_user)) -> DashboardSummary:
+    """Docstring."""
     try:
         profile = get_profile(user.id)
         if not profile:
@@ -90,6 +92,7 @@ async def get_dashboard_summary(user=Depends(get_current_user)) -> DashboardSumm
 
 @router.get("/dashboard/history", response_model=List[HistoryEntry])
 async def get_history(user=Depends(get_current_user)) -> List[HistoryEntry]:
+    """Docstring."""
     history_data = CarbonRepository.get_history(user.id, limit=20)
     return [
         HistoryEntry(
@@ -104,12 +107,14 @@ async def get_history(user=Depends(get_current_user)) -> List[HistoryEntry]:
 
 @router.get("/challenges", response_model=List[Challenge])
 async def get_challenges(user=Depends(get_current_user)) -> List[Challenge]:
+    """Docstring."""
     challenges = ChallengeRepository.get_current(user.id)
     return [Challenge(**c) for c in challenges]
 
 
 @router.post("/challenges/{id}/complete")
 async def complete_challenge(id: str, user=Depends(get_current_user)) -> dict:
+    """Docstring."""
     try:
         updated = ChallengeRepository.complete_challenge(id, user.id)
 

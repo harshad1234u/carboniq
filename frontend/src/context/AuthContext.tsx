@@ -84,7 +84,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       console.log("Profile found");
       setProfile(prof);
       setIsProfileComplete(!!prof.city);
-    } catch (err: any) {
+    } catch (err) {
       if (err.message === 'Profile not found' || err.message?.includes('not found') || err.message?.includes('404')) {
         console.log("Profile missing - redirecting to onboarding");
         setIsProfileComplete(false);

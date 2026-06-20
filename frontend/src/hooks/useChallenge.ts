@@ -12,7 +12,7 @@ export function useChallenge() {
     try {
       const data = await api.get('/challenges');
       setChallenges(data);
-    } catch (err: any) {
+    } catch (err) {
       setError(err.message || 'Failed to load challenges');
     } finally {
       setLoading(false);
@@ -30,7 +30,7 @@ export function useChallenge() {
     try {
       const data = await api.get('/badges');
       setBadges(data);
-    } catch (err: any) {
+    } catch (err) {
       console.error(err);
     }
   };

@@ -12,7 +12,7 @@ from utils.emission_factors import IMPACT_EQUIVALENTS
 
 def calculate_equivalents(kg_co2: float) -> dict[str, float]:
     """Convert kilograms of CO₂e into relatable impact equivalents.
-
+    
     Equivalents calculated:
         * **driving_km** – km driven in an average passenger car
         * **smartphone_charges** – full smartphone charges
@@ -20,11 +20,13 @@ def calculate_equivalents(kg_co2: float) -> dict[str, float]:
         * **led_bulb_hours** – hours a 10 W LED bulb could run
 
     Args:
-        kg_co2: Total CO₂e in kilograms.
+      kg_co2: Total CO₂e in kilograms.
+      kg_co2: float: 
 
     Returns:
-        A dict mapping each equivalent name to its computed value,
-        rounded to one decimal place.  All values are ≥ 0.
+      : A dict mapping each equivalent name to its computed value,
+      rounded to one decimal place.  All values are ≥ 0.
+
     """
     if kg_co2 < 0:
         kg_co2 = 0.0

@@ -63,10 +63,13 @@ export function CarbonScoreGauge({ score }: CarbonScoreGaugeProps) {
             className={cn("transition-all duration-1000 ease-out", level.color)}
           />
         </svg>
-        <div className="absolute inset-0 flex flex-col items-center justify-center pt-4">
-          <span className="text-4xl font-bold tracking-tighter">{animatedScore}</span>
-          <span className="text-xs text-slate-400 font-medium">/ 100</span>
-        </div>
+        <div className="absolute inset-0 flex flex-col items-center justify-center pt-8">
+        <span className="text-4xl font-bold text-gray-900">{Math.round(score)}</span>
+        <span className="text-sm font-medium text-gray-500 mt-1">kg CO₂e</span>
+        <p className="text-xs text-gray-400 mt-2 text-center px-4">
+          Lower is better. Track and reduce<br/>your emissions below the 1000kg average.
+        </p>
+      </div>
       </div>
       <div className={cn("mt-[-1rem] px-4 py-1.5 rounded-full border text-sm font-semibold tracking-wide", level.bg, level.color, `border-${level.color.split('-')[1]}-500/30`)}>
         {level.label}

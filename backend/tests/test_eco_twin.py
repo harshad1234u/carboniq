@@ -3,6 +3,7 @@ from models.ai_coach import Recommendation
 
 
 def test_basic_prediction():
+    """ """
     recs = [
         Recommendation(
             title="T1",
@@ -18,12 +19,14 @@ def test_basic_prediction():
 
 
 def test_zero_savings():
+    """ """
     res = calculate_eco_twin(200, [])
     assert res.predicted_footprint == 200
     assert res.reduction_percentage == 0.0
 
 
 def test_prediction_never_negative():
+    """ """
     recs = [
         Recommendation(
             title="T1",

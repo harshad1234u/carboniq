@@ -38,7 +38,7 @@ export function FootprintBreakdown({ transport, electricity, food, flights, tota
             ))}
           </Pie>
           <Tooltip 
-            formatter={(value: any) => [formatCO2(value as number), 'Emissions']}
+            formatter={(value: number) => [formatCO2(value as number), 'Emissions']}
             contentStyle={{ backgroundColor: '#0f172a', borderColor: '#1e293b', borderRadius: '8px' }}
             itemStyle={{ color: '#f8fafc' }}
           />

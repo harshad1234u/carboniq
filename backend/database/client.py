@@ -1,3 +1,4 @@
+"""Module docstring."""
 import os
 import logging
 from supabase import create_client, Client

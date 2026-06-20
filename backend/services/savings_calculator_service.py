@@ -115,8 +115,11 @@ _ACTION_SAVINGS: dict[str, dict[str, Any]] = {
 def get_action_savings() -> dict[str, dict[str, Any]]:
     """Return the full action-savings lookup table.
 
+    Args:
+
     Returns:
-        Dict mapping action keys to their savings metadata.
+      Dict mapping action keys to their savings metadata.
+
     """
     return _ACTION_SAVINGS.copy()
 
@@ -127,19 +130,23 @@ def calculate_savings(
     profile: dict[str, Any] | None = None,
 ) -> list[dict[str, Any]]:
     """Estimate per-recommendation savings based on action lookup.
-
+    
     For each recommendation, the function tries to match its title/description
     to a known action.  If a match is found, the pre-computed savings are
     used; otherwise a conservative default is applied.
 
     Args:
-        recommendations: List of recommendation dicts or objects.
-        current_footprint: Current monthly CO₂e in kg.
-        profile: Optional user profile dict for personalisation.
+      recommendations: List of recommendation dicts or objects.
+      current_footprint: Current monthly CO₂e in kg.
+      profile: Optional user profile dict for personalisation.
+      recommendations: list[Any]: 
+      current_footprint: float: 
+      profile: dict[str: 
+      Any] | None:  (Default value = None)
 
     Returns:
-        A list of dicts, one per recommendation, containing:
-            ``title``, ``co2_savings_kg``, ``cost_savings_inr``, ``description``.
+      A list of dicts, one per recommendation, containing: ``title``, ``co2_savings_kg``, ``cost_savings_inr``, ``description``.
+
     """
     results: list[dict[str, Any]] = []
 

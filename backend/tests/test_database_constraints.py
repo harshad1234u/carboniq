@@ -4,7 +4,15 @@ from utils.config import settings
 
 
 def _table_exists(client, table_name: str) -> bool:
-    """Check if a table is accessible (exists in Supabase schema cache)."""
+    """Check if a table is accessible (exists in Supabase schema cache).
+
+    Args:
+      client: 
+      table_name: str: 
+
+    Returns:
+
+    """
     try:
         client.table(table_name).select("*").limit(0).execute()
         return True

@@ -19,11 +19,14 @@ def calculate_eco_twin(
     """Predict the user's footprint after applying recommendations.
 
     Args:
-        current_footprint: Current monthly CO₂e in kg.
-        recommendations: List of recommendations with ``co2_savings_kg``.
+      current_footprint: Current monthly CO₂e in kg.
+      recommendations: List of recommendations with ``co2_savings_kg``.
+      current_footprint: float: 
+      recommendations: list[Recommendation]: 
 
     Returns:
-        An ``EcoTwinResponse`` with current vs predicted comparison.
+      : An ``EcoTwinResponse`` with current vs predicted comparison.
+
     """
     if current_footprint < 0:
         current_footprint = 0.0

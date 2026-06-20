@@ -1,3 +1,4 @@
+"""Module docstring."""
 import logging
 from typing import Any, Dict, Optional
 from database.repositories import ProfileRepository
@@ -6,7 +7,14 @@ logger = logging.getLogger(__name__)
 
 
 def get_profile(user_id: str) -> Optional[Dict[str, Any]]:
-    """Fetch user profile."""
+    """Fetch user profile.
+
+    Args:
+      user_id: str: 
+
+    Returns:
+
+    """
     try:
         return ProfileRepository.get_profile(user_id)
     except Exception as e:
@@ -15,7 +23,16 @@ def get_profile(user_id: str) -> Optional[Dict[str, Any]]:
 
 
 def create_profile(user_id: str, profile_data: Dict[str, Any]) -> Dict[str, Any]:
-    """Create a new profile."""
+    """Create a new profile.
+
+    Args:
+      user_id: str: 
+      profile_data: Dict[str: 
+      Any]: 
+
+    Returns:
+
+    """
     try:
         data = profile_data.copy()
         data["id"] = user_id
@@ -26,7 +43,16 @@ def create_profile(user_id: str, profile_data: Dict[str, Any]) -> Dict[str, Any]
 
 
 def update_profile(user_id: str, profile_data: Dict[str, Any]) -> Dict[str, Any]:
-    """Update an existing profile."""
+    """Update an existing profile.
+
+    Args:
+      user_id: str: 
+      profile_data: Dict[str: 
+      Any]: 
+
+    Returns:
+
+    """
     try:
         return ProfileRepository.update_profile(user_id, profile_data)
     except Exception as e:

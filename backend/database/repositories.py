@@ -1,3 +1,4 @@
+"""Module docstring."""
 import logging
 from typing import Any, Dict, List, Optional
 from database.client import get_supabase
@@ -6,8 +7,17 @@ logger = logging.getLogger(__name__)
 
 
 class ProfileRepository:
+    """ """
     @staticmethod
     def get_profile(user_id: str) -> Optional[Dict[str, Any]]:
+        """
+
+        Args:
+          user_id: str: 
+
+        Returns:
+
+        """
         client = get_supabase()
         response = client.table("profiles").select("*").eq("id", user_id).execute()
         if response.data:
@@ -16,12 +26,31 @@ class ProfileRepository:
 
     @staticmethod
     def create_profile(profile_data: Dict[str, Any]) -> Dict[str, Any]:
+        """
+
+        Args:
+          profile_data: Dict[str: 
+          Any]: 
+
+        Returns:
+
+        """
         client = get_supabase()
         response = client.table("profiles").insert(profile_data).execute()
         return response.data[0]
 
     @staticmethod
     def update_profile(user_id: str, profile_data: Dict[str, Any]) -> Dict[str, Any]:
+        """
+
+        Args:
+          user_id: str: 
+          profile_data: Dict[str: 
+          Any]: 
+
+        Returns:
+
+        """
         client = get_supabase()
         response = (
             client.table("profiles").update(profile_data).eq("id", user_id).execute()
@@ -30,14 +59,33 @@ class ProfileRepository:
 
 
 class CarbonRepository:
+    """ """
     @staticmethod
     def create_entry(entry_data: Dict[str, Any]) -> Dict[str, Any]:
+        """
+
+        Args:
+          entry_data: Dict[str: 
+          Any]: 
+
+        Returns:
+
+        """
         client = get_supabase()
         response = client.table("carbon_entries").insert(entry_data).execute()
         return response.data[0]
 
     @staticmethod
     def get_history(user_id: str, limit: int = 10) -> List[Dict[str, Any]]:
+        """
+
+        Args:
+          user_id: str: 
+          limit: int:  (Default value = 10)
+
+        Returns:
+
+        """
         client = get_supabase()
         response = (
             client.table("carbon_entries")
@@ -51,6 +99,14 @@ class CarbonRepository:
 
     @staticmethod
     def get_latest(user_id: str) -> Optional[Dict[str, Any]]:
+        """
+
+        Args:
+          user_id: str: 
+
+        Returns:
+
+        """
         client = get_supabase()
         response = (
             client.table("carbon_entries")
@@ -66,14 +122,32 @@ class CarbonRepository:
 
 
 class RecommendationRepository:
+    """ """
     @staticmethod
     def create(data: Dict[str, Any]) -> Dict[str, Any]:
+        """
+
+        Args:
+          data: Dict[str: 
+          Any]: 
+
+        Returns:
+
+        """
         client = get_supabase()
         response = client.table("recommendations").insert(data).execute()
         return response.data[0]
 
     @staticmethod
     def get_latest(user_id: str) -> Optional[Dict[str, Any]]:
+        """
+
+        Args:
+          user_id: str: 
+
+        Returns:
+
+        """
         client = get_supabase()
         response = (
             client.table("recommendations")
@@ -89,14 +163,32 @@ class RecommendationRepository:
 
 
 class EcoPredictionRepository:
+    """ """
     @staticmethod
     def create(data: Dict[str, Any]) -> Dict[str, Any]:
+        """
+
+        Args:
+          data: Dict[str: 
+          Any]: 
+
+        Returns:
+
+        """
         client = get_supabase()
         response = client.table("eco_predictions").insert(data).execute()
         return response.data[0]
 
     @staticmethod
     def get_latest(user_id: str) -> Optional[Dict[str, Any]]:
+        """
+
+        Args:
+          user_id: str: 
+
+        Returns:
+
+        """
         client = get_supabase()
         response = (
             client.table("eco_predictions")
@@ -112,14 +204,32 @@ class EcoPredictionRepository:
 
 
 class ChallengeRepository:
+    """ """
     @staticmethod
     def create_challenges(data_list: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+        """
+
+        Args:
+          data_list: List[Dict[str: 
+          Any]]: 
+
+        Returns:
+
+        """
         client = get_supabase()
         response = client.table("challenges").insert(data_list).execute()
         return response.data
 
     @staticmethod
     def get_current(user_id: str) -> List[Dict[str, Any]]:
+        """
+
+        Args:
+          user_id: str: 
+
+        Returns:
+
+        """
         client = get_supabase()
         # simplified check for current week
         response = (
@@ -134,6 +244,15 @@ class ChallengeRepository:
 
     @staticmethod
     def complete_challenge(challenge_id: str, user_id: str) -> Dict[str, Any]:
+        """
+
+        Args:
+          challenge_id: str: 
+          user_id: str: 
+
+        Returns:
+
+        """
         client = get_supabase()
         response = (
             client.table("challenges")
@@ -146,14 +265,32 @@ class ChallengeRepository:
 
 
 class BadgeRepository:
+    """ """
     @staticmethod
     def create(data: Dict[str, Any]) -> Dict[str, Any]:
+        """
+
+        Args:
+          data: Dict[str: 
+          Any]: 
+
+        Returns:
+
+        """
         client = get_supabase()
         response = client.table("badges").insert(data).execute()
         return response.data[0]
 
     @staticmethod
     def get_all(user_id: str) -> List[Dict[str, Any]]:
+        """
+
+        Args:
+          user_id: str: 
+
+        Returns:
+
+        """
         client = get_supabase()
         response = (
             client.table("badges")

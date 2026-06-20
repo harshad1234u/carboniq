@@ -1,3 +1,4 @@
+"""Module docstring."""
 import os
 import logging
 from pythonjsonlogger import jsonlogger
@@ -61,6 +62,7 @@ is_ready = False
 
 @app.on_event("startup")
 async def startup_event():
+    """Docstring."""
     global is_ready
     try:
         load_settings()
@@ -78,11 +80,20 @@ async def startup_event():
 
 @app.get("/health")
 def health_check():
+    """ """
     return {"status": "healthy"}
 
 
 @app.get("/health/startup")
 def startup_check(response: Response):
+    """
+
+    Args:
+      response: Response: 
+
+    Returns:
+
+    """
     if is_ready:
         return {"status": "started"}
     response.status_code = status.HTTP_503_SERVICE_UNAVAILABLE
@@ -91,6 +102,14 @@ def startup_check(response: Response):
 
 @app.get("/health/readiness")
 def readiness_check(response: Response):
+    """
+
+    Args:
+      response: Response: 
+
+    Returns:
+
+    """
     if not is_ready:
         response.status_code = status.HTTP_503_SERVICE_UNAVAILABLE
         return {"status": "not_ready"}

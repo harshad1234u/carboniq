@@ -6,14 +6,14 @@ export function useCarbon() {
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<any | null>(null);
 
-  const calculate = async (input: any) => {
+  const calculate = async (input: unknown) => {
     setLoading(true);
     setError(null);
     try {
       const data = await api.post('/carbon/calculate', input);
       setResult(data);
       return data;
-    } catch (err: any) {
+    } catch (err) {
       setError(err.message || 'Failed to calculate emissions');
       throw err;
     } finally {
@@ -26,7 +26,7 @@ export function useCarbon() {
     setError(null);
     try {
       return await api.get('/dashboard/summary');
-    } catch (err: any) {
+    } catch (err) {
       setError(err.message || 'Failed to load dashboard summary');
       throw err;
     } finally {
@@ -39,7 +39,7 @@ export function useCarbon() {
     setError(null);
     try {
       return await api.post('/carbon/ai-coach', {});
-    } catch (err: any) {
+    } catch (err) {
       setError(err.message || 'Failed to get AI recommendations');
       throw err;
     } finally {
@@ -52,7 +52,7 @@ export function useCarbon() {
     setError(null);
     try {
       return await api.post('/carbon/eco-twin', { entry_id: '' });
-    } catch (err: any) {
+    } catch (err) {
       setError(err.message || 'Failed to generate Eco Twin');
       throw err;
     } finally {

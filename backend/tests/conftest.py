@@ -4,6 +4,7 @@ from models.calculator import CarbonInput
 
 @pytest.fixture
 def base_input():
+    """ """
     return CarbonInput(
         vehicle_type="bicycle",
         daily_travel_km=0,

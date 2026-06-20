@@ -10,6 +10,7 @@ from utils.config import settings
     reason="Real Supabase connection required",
 )
 def test_rls_violations():
+    """ """
     # We will simulate RLS by using the admin client to create two dummy profiles
     # Then we use a client initialized with an anon key (or jwt for user A) to fetch data.
     # To truly test RLS, we need the user's JWT. We can use auth.sign_up for a dummy user.

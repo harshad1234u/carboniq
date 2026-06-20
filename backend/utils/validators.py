@@ -23,17 +23,21 @@ def validate_positive_number(
     cap: float = 10_000.0,
 ) -> float:
     """Ensure *value* is a non-negative number, clamping if necessary.
-
+    
     * Negative values are clamped to ``0``.
     * Values exceeding *cap* are clamped to *cap*.
 
     Args:
-        value: The numeric value to validate.
-        field_name: Human-readable field name (used in messages).
-        cap: Upper bound; defaults to ``10 000``.
+      value: The numeric value to validate.
+      field_name: Human-readable field name (used in messages).
+      cap: Upper bound; defaults to ``10 000``.
+      value: float | int: 
+      field_name: str: 
+      cap: float:  (Default value = 10_000.0)
 
     Returns:
-        The validated (and possibly clamped) float value.
+      : The validated (and possibly clamped) float value.
+
     """
     try:
         value = float(value)
@@ -61,15 +65,19 @@ def validate_string_enum(
     """Validate that *value* is one of *allowed_values* (case-insensitive).
 
     Args:
-        value: The string to validate.
-        allowed_values: Accepted values.
-        field_name: Human-readable field name.
+      value: The string to validate.
+      allowed_values: Accepted values.
+      field_name: Human-readable field name.
+      value: str: 
+      allowed_values: Sequence[str]: 
+      field_name: str: 
 
     Returns:
-        The value in its canonical (lower-case) form.
+      : The value in its canonical (lower-case) form.
 
     Raises:
-        ValueError: If *value* is not in the allowed set.
+      ValueError: If *value* is not in the allowed set.
+
     """
     if not isinstance(value, str) or not value.strip():
         raise ValueError(f"{field_name} must be a non-empty string.")
@@ -96,13 +104,15 @@ def validate_email(email: str) -> str:
     """Validate a basic email format.
 
     Args:
-        email: The email string to check.
+      email: The email string to check.
+      email: str: 
 
     Returns:
-        The email in lower-case, stripped of whitespace.
+      : The email in lower-case, stripped of whitespace.
 
     Raises:
-        ValueError: If the email does not match a basic pattern.
+      ValueError: If the email does not match a basic pattern.
+
     """
     if not isinstance(email, str) or not email.strip():
         raise ValueError("Email must be a non-empty string.")
@@ -127,14 +137,17 @@ def sanitize_string(text: str, max_length: int = 5_000) -> str:
     """Strip HTML/script tags and escape remaining entities.
 
     Args:
-        text: Raw user input.
-        max_length: Maximum allowed length after sanitisation.
+      text: Raw user input.
+      max_length: Maximum allowed length after sanitisation.
+      text: str: 
+      max_length: int:  (Default value = 5_000)
 
     Returns:
-        A safe, plain-text string.
+      : A safe, plain-text string.
 
     Raises:
-        ValueError: If *text* is not a string.
+      ValueError: If *text* is not a string.
+
     """
     if not isinstance(text, str):
         raise ValueError("Expected a string value for sanitisation.")

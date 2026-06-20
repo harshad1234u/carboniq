@@ -13,6 +13,14 @@ from utils.config import settings
 
 
 def _make_footprint(**overrides):
+    """
+
+    Args:
+      **overrides: 
+
+    Returns:
+
+    """
     defaults = dict(
         transport_emissions=100.0,
         electricity_emissions=200.0,
@@ -31,7 +39,9 @@ def _make_footprint(**overrides):
 
 
 class TestBuildPrompt:
+    """ """
     def test_includes_footprint_data(self):
+        """ """
         fp = _make_footprint()
         prompt = _build_prompt(fp, None, {"city": "Mumbai"})
         assert "200.0" in prompt  # electricity_emissions
@@ -39,6 +49,7 @@ class TestBuildPrompt:
         assert "Mumbai" in prompt
 
     def test_includes_weather_context(self):
+        """ """
         fp = _make_footprint()
         weather = WeatherData(
             city="Delhi",
@@ -53,11 +64,13 @@ class TestBuildPrompt:
         assert "Clear sky" in prompt
 
     def test_handles_no_weather(self):
+        """ """
         fp = _make_footprint()
         prompt = _build_prompt(fp, None, {})
         assert "JSON" in prompt  # Still contains JSON format instructions
 
     def test_includes_profile_data(self):
+        """ """
         fp = _make_footprint()
         profile = {
             "city": "Pune",
@@ -71,6 +84,7 @@ class TestBuildPrompt:
         assert "vegan" in prompt
 
     def test_handles_empty_profile(self):
+        """ """
         fp = _make_footprint()
         prompt = _build_prompt(fp, None, {})
         assert "Unknown" in prompt  # Defaults
@@ -82,7 +96,9 @@ class TestBuildPrompt:
 
 
 class TestFallbackSelection:
+    """ """
     def test_transport_highest_gives_transport_recs(self):
+        """ """
         fp = _make_footprint(
             transport_emissions=500.0,
             electricity_emissions=50.0,
@@ -99,6 +115,7 @@ class TestFallbackSelection:
         )
 
     def test_food_highest_gives_food_recs(self):
+        """ """
         fp = _make_footprint(
             transport_emissions=10.0,
             electricity_emissions=10.0,
@@ -112,6 +129,7 @@ class TestFallbackSelection:
         assert any(kw in recs[0].title.lower() for kw in food_keywords)
 
     def test_flights_highest_gives_flight_rec(self):
+        """ """
         fp = _make_footprint(
             transport_emissions=10.0,
             electricity_emissions=10.0,
@@ -126,6 +144,7 @@ class TestFallbackSelection:
         )
 
     def test_all_zero_emissions_still_returns_3(self):
+        """ """
         fp = _make_footprint(
             transport_emissions=0.0,
             electricity_emissions=0.0,
@@ -137,6 +156,7 @@ class TestFallbackSelection:
         assert len(recs) == 3
 
     def test_recommendations_have_positive_savings(self):
+        """ """
         fp = _make_footprint()
         recs = _select_fallback_recommendations(fp)
         for r in recs:
@@ -144,6 +164,7 @@ class TestFallbackSelection:
             assert r.cost_savings_inr >= 0
 
     def test_recommendations_have_valid_difficulty(self):
+        """ """
         fp = _make_footprint()
         recs = _select_fallback_recommendations(fp)
         for r in recs:
@@ -156,6 +177,7 @@ class TestFallbackSelection:
 
 
 class TestGetRecommendationsIntegration:
+    """ """
     @pytest.mark.asyncio
     async def test_with_weather_context(self):
         original = settings.gemini_api_key

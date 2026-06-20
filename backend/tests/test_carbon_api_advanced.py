@@ -9,15 +9,18 @@ client = TestClient(app, raise_server_exceptions=False)
 
 
 class _FakeUser:
+    """ """
     id = "test-user-uuid"
 
 
 def _override_auth():
+    """ """
     return _FakeUser()
 
 
 @pytest.fixture(autouse=True)
 def _patch_auth():
+    """ """
     from api.profile import get_current_user
 
     app.dependency_overrides[get_current_user] = _override_auth
@@ -68,6 +71,7 @@ _MOCK_RECS = {
 
 
 class TestAiCoachEndpointFull:
+    """ """
     @patch("api.carbon.RecommendationRepository")
     @patch("api.carbon.CarbonRepository")
     @patch("api.carbon.get_profile")
@@ -76,6 +80,18 @@ class TestAiCoachEndpointFull:
     def test_successful_ai_coach(
         self, mock_recs, mock_weather, mock_prof, mock_carbon, mock_rec_repo
     ):
+        """
+
+        Args:
+          mock_recs: 
+          mock_weather: 
+          mock_prof: 
+          mock_carbon: 
+          mock_rec_repo: 
+
+        Returns:
+
+        """
         from models.ai_coach import Recommendation, AiCoachResponse
         from models.weather import WeatherData
 
@@ -130,10 +146,21 @@ class TestAiCoachEndpointFull:
 
 
 class TestEcoTwinEndpoint:
+    """ """
     @patch("api.carbon.EcoPredictionRepository")
     @patch("api.carbon.RecommendationRepository")
     @patch("api.carbon.CarbonRepository")
     def test_successful_eco_twin(self, mock_carbon, mock_rec_repo, mock_eco_repo):
+        """
+
+        Args:
+          mock_carbon: 
+          mock_rec_repo: 
+          mock_eco_repo: 
+
+        Returns:
+
+        """
         mock_carbon.get_latest.return_value = _MOCK_ENTRY
         mock_rec_repo.get_latest.return_value = _MOCK_RECS
         mock_eco_repo.create.return_value = {}
@@ -149,6 +176,15 @@ class TestEcoTwinEndpoint:
     @patch("api.carbon.RecommendationRepository")
     @patch("api.carbon.CarbonRepository")
     def test_no_carbon_entry(self, mock_carbon, mock_rec_repo):
+        """
+
+        Args:
+          mock_carbon: 
+          mock_rec_repo: 
+
+        Returns:
+
+        """
         mock_carbon.get_latest.return_value = None
         resp = client.post("/api/carbon/eco-twin", json={"entry_id": "entry-uuid"})
         assert resp.status_code == 400
@@ -156,6 +192,15 @@ class TestEcoTwinEndpoint:
     @patch("api.carbon.RecommendationRepository")
     @patch("api.carbon.CarbonRepository")
     def test_no_recommendations(self, mock_carbon, mock_rec_repo):
+        """
+
+        Args:
+          mock_carbon: 
+          mock_rec_repo: 
+
+        Returns:
+
+        """
         mock_carbon.get_latest.return_value = _MOCK_ENTRY
         mock_rec_repo.get_latest.return_value = None
         resp = client.post("/api/carbon/eco-twin", json={"entry_id": "entry-uuid"})
@@ -163,8 +208,17 @@ class TestEcoTwinEndpoint:
 
 
 class TestCalculateWithDbError:
+    """ """
     @patch("api.carbon.CarbonRepository")
     def test_db_save_failure_returns_400(self, mock_repo):
+        """
+
+        Args:
+          mock_repo: 
+
+        Returns:
+
+        """
         mock_repo.create_entry.side_effect = Exception("DB write failed")
         resp = client.post(
             "/api/carbon/calculate",
@@ -182,6 +236,7 @@ class TestCalculateWithDbError:
 
 
 class TestDashboardCompleteChallengeEndpoint:
+    """ """
     @patch("api.dashboard.BadgeRepository")
     @patch("api.dashboard.ChallengeRepository")
     @patch("api.dashboard.get_profile")
@@ -189,6 +244,17 @@ class TestDashboardCompleteChallengeEndpoint:
     def test_complete_challenge_success(
         self, mock_repo, mock_prof, mock_chal, mock_badge
     ):
+        """
+
+        Args:
+          mock_repo: 
+          mock_prof: 
+          mock_chal: 
+          mock_badge: 
+
+        Returns:
+
+        """
         mock_chal.complete_challenge.return_value = {
             "id": "ch-1",
             "eco_points": 10,
@@ -210,6 +276,17 @@ class TestDashboardCompleteChallengeEndpoint:
     def test_complete_challenge_awards_badge_at_50_points(
         self, mock_repo, mock_prof, mock_chal, mock_badge
     ):
+        """
+
+        Args:
+          mock_repo: 
+          mock_prof: 
+          mock_chal: 
+          mock_badge: 
+
+        Returns:
+
+        """
         mock_chal.complete_challenge.return_value = {
             "id": "ch-1",
             "eco_points": 10,
@@ -227,6 +304,14 @@ class TestDashboardCompleteChallengeEndpoint:
 
     @patch("api.dashboard.ChallengeRepository")
     def test_complete_challenge_failure(self, mock_chal):
+        """
+
+        Args:
+          mock_chal: 
+
+        Returns:
+
+        """
         mock_chal.complete_challenge.side_effect = Exception("DB error")
         resp = client.post("/api/challenges/ch-1/complete")
         assert resp.status_code == 400

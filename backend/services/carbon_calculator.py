@@ -20,7 +20,7 @@ from utils.emission_factors import (
 
 def calculate_emissions(carbon_input: CarbonInput) -> CarbonResult:
     """Calculate a full monthly carbon footprint breakdown.
-
+    
     Calculation methodology:
         * **Transport** = emission_factor[vehicle_type] × daily_km × 30 days
         * **Electricity** = monthly_kWh × grid_factor
@@ -29,10 +29,12 @@ def calculate_emissions(carbon_input: CarbonInput) -> CarbonResult:
         * **Flights** = (short_haul_flights × 255 + long_haul_flights × 1100) / 12
 
     Args:
-        carbon_input: Validated ``CarbonInput`` from the user.
+      carbon_input: Validated ``CarbonInput`` from the user.
+      carbon_input: CarbonInput: 
 
     Returns:
-        A ``CarbonResult`` with the full breakdown, score, and equivalents.
+      : A ``CarbonResult`` with the full breakdown, score, and equivalents.
+
     """
     # --- Transport ---
     transport_factor = TRANSPORT_FACTORS.get(carbon_input.vehicle_type, 0.0)
@@ -84,9 +86,9 @@ def calculate_emissions(carbon_input: CarbonInput) -> CarbonResult:
 
 def calculate_carbon_score(total_monthly_kg: float) -> CarbonScore:
     """Derive a 0–100 carbon score from total monthly emissions.
-
+    
     The score is a linear mapping where ~333 kg/month maps to 100.
-
+    
     Scoring bands:
         * **0–30**: Green Hero (emerald)
         * **31–60**: Eco Aware (amber)
@@ -94,10 +96,12 @@ def calculate_carbon_score(total_monthly_kg: float) -> CarbonScore:
         * **81–100**: Critical (red)
 
     Args:
-        total_monthly_kg: Total monthly CO₂e in kg.
+      total_monthly_kg: Total monthly CO₂e in kg.
+      total_monthly_kg: float: 
 
     Returns:
-        A ``CarbonScore`` with the numeric score, level name, and colour.
+      : A ``CarbonScore`` with the numeric score, level name, and colour.
+
     """
     raw = (total_monthly_kg / 333) * 100
     score = min(100, max(0, int(raw)))

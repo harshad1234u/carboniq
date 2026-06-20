@@ -7,19 +7,39 @@ client = TestClient(app)
 
 
 def test_missing_profile_after_auth(mocker):
+    """
+
+    Args:
+      mocker: 
+
+    Returns:
+
+    """
     # Mock supabase client
     class MockUser:
+        """ """
         id = "123"
 
     class MockAuthResponse:
+        """ """
         user = MockUser()
         session = {"access_token": "fake_token"}
 
     class MockAuth:
+        """ """
         def sign_in_with_password(self, creds):
+            """
+
+            Args:
+              creds: 
+
+            Returns:
+
+            """
             return MockAuthResponse()
 
     class MockSupabase:
+        """ """
         auth = MockAuth()
 
     mocker.patch("api.profile.get_supabase", return_value=MockSupabase())
@@ -36,12 +56,30 @@ def test_missing_profile_after_auth(mocker):
 
 
 def test_invalid_auth_credentials(mocker):
+    """
+
+    Args:
+      mocker: 
+
+    Returns:
+
+    """
     # Simulate invalid login
     class MockAuth:
+        """ """
         def sign_in_with_password(self, creds):
+            """
+
+            Args:
+              creds: 
+
+            Returns:
+
+            """
             raise Exception("Invalid login credentials")
 
     class MockSupabase:
+        """ """
         auth = MockAuth()
 
     mocker.patch("api.profile.get_supabase", return_value=MockSupabase())
@@ -53,12 +91,30 @@ def test_invalid_auth_credentials(mocker):
 
 
 def test_expired_session(mocker):
+    """
+
+    Args:
+      mocker: 
+
+    Returns:
+
+    """
     # Mock supabase client so auth.get_user raises, simulating expired JWT
     class MockAuth:
+        """ """
         def get_user(self, token):
+            """
+
+            Args:
+              token: 
+
+            Returns:
+
+            """
             raise Exception("Token expired")
 
     class MockSupabase:
+        """ """
         auth = MockAuth()
 
     mocker.patch("api.profile.get_supabase", return_value=MockSupabase())

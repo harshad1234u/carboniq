@@ -111,10 +111,12 @@ def _select_fallback_recommendations(
     """Select the best fallback recommendations based on the highest category.
 
     Args:
-        footprint: The user's calculated carbon result.
+      footprint: The user's calculated carbon result.
+      footprint: CarbonResult: 
 
     Returns:
-        A list of 3 ``Recommendation`` objects.
+      : A list of 3 ``Recommendation`` objects.
+
     """
     categories = {
         "transport": footprint.transport_emissions,
@@ -156,12 +158,17 @@ def _build_prompt(
     """Build a structured prompt for Gemini.
 
     Args:
-        footprint: Carbon result breakdown.
-        weather: Current weather context.
-        profile: User profile dict.
+      footprint: Carbon result breakdown.
+      weather: Current weather context.
+      profile: User profile dict.
+      footprint: CarbonResult: 
+      weather: WeatherData | None: 
+      profile: dict[str: 
+      Any]: 
 
     Returns:
-        A prompt string requesting JSON-formatted recommendations.
+      : A prompt string requesting JSON-formatted recommendations.
+
     """
     weather_info = ""
     if weather:

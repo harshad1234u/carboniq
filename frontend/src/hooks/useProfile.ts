@@ -27,7 +27,7 @@ export function useProfile() {
     try {
       const data = await api.get('/profile');
       setProfile(data);
-    } catch (err: any) {
+    } catch (err) {
       setError(err.message || 'Failed to load profile');
     } finally {
       setLoading(false);
@@ -41,7 +41,7 @@ export function useProfile() {
       const data = await api.put('/profile', updates);
       setProfile(data);
       return data;
-    } catch (err: any) {
+    } catch (err) {
       setError(err.message || 'Failed to update profile');
       throw err;
     } finally {

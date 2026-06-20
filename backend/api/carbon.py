@@ -1,3 +1,4 @@
+"""Module docstring."""
 import logging
 from fastapi import APIRouter, Depends, HTTPException
 from api.profile import get_current_user
@@ -26,6 +27,7 @@ router = APIRouter(prefix="/api/carbon")
 async def calculate_carbon(
     input_data: CarbonInput, user=Depends(get_current_user)
 ) -> CarbonResult:
+    """Docstring."""
     try:
         # Calculate emissions
         result = calculate_emissions(input_data)
@@ -53,12 +55,14 @@ async def calculate_carbon(
 
 @router.get("/weather/{city}", response_model=WeatherData)
 async def get_city_weather(city: str, user=Depends(get_current_user)) -> WeatherData:
+    """Docstring."""
     weather = await get_weather(city)
     return weather
 
 
 @router.post("/ai-coach", response_model=AiCoachResponse)
 async def run_ai_coach(user=Depends(get_current_user)) -> AiCoachResponse:
+    """Docstring."""
     try:
         profile = get_profile(user.id)
         if not profile:
@@ -115,6 +119,7 @@ async def run_ai_coach(user=Depends(get_current_user)) -> AiCoachResponse:
 async def run_eco_twin(
     request: EcoTwinRequest, user=Depends(get_current_user)
 ) -> EcoTwinResponse:
+    """Docstring."""
     try:
         latest_entry = CarbonRepository.get_latest(user.id)
         if not latest_entry:

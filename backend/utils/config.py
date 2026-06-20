@@ -23,22 +23,12 @@ load_dotenv(dotenv_path=_ENV_PATH)
 
 
 class ConfigError(Exception):
-    """Raised when a required configuration variable is missing."""
+    """ """
 
 
 @dataclass(frozen=True)
 class Settings:
-    """Application-wide settings sourced from environment variables.
-
-    Attributes:
-        gemini_api_key: Google Gemini API key for AI coach features.
-        openweather_api_key: OpenWeather API key for weather lookups.
-        supabase_url: URL of the Supabase project instance.
-        supabase_service_role_key: Supabase service-role key for admin operations.
-        supabase_jwt_secret: Secret used to validate Supabase JWTs.
-        app_env: Current environment (development | staging | production).
-        log_level: Logging level (DEBUG, INFO, WARNING, ERROR, CRITICAL).
-    """
+    """Application-wide settings sourced from environment variables."""
 
     gemini_api_key: str = ""
     openweather_api_key: str = ""
@@ -53,15 +43,19 @@ def _get_env(name: str, required: bool = True, default: str = "") -> str:
     """Retrieve an environment variable, raising if required and missing.
 
     Args:
-        name: The environment variable name.
-        required: Whether the variable is mandatory.
-        default: Fallback value when the variable is not required.
+      name: The environment variable name.
+      required: Whether the variable is mandatory.
+      default: Fallback value when the variable is not required.
+      name: str: 
+      required: bool:  (Default value = True)
+      default: str:  (Default value = "")
 
     Returns:
-        The value of the environment variable.
+      : The value of the environment variable.
 
     Raises:
-        ConfigError: If the variable is required but missing or empty.
+      ConfigError: If the variable is required but missing or empty.
+
     """
     value = os.getenv(name, default).strip()
     if required and not value:
@@ -75,11 +69,14 @@ def _get_env(name: str, required: bool = True, default: str = "") -> str:
 def load_settings() -> Settings:
     """Build a ``Settings`` instance from environment variables.
 
+    Args:
+
     Returns:
-        A fully-populated ``Settings`` dataclass.
+      : A fully-populated ``Settings`` dataclass.
 
     Raises:
-        ConfigError: If any required variable is absent.
+      ConfigError: If any required variable is absent.
+
     """
     return Settings(
         gemini_api_key=_get_env("GEMINI_API_KEY"),
@@ -94,11 +91,14 @@ def load_settings() -> Settings:
 
 def load_settings_safe() -> Settings:
     """Load settings without raising on missing vars.
-
+    
     Useful during testing or when only a subset of services is needed.
 
+    Args:
+
     Returns:
-        A ``Settings`` instance with whatever values are available.
+      : A ``Settings`` instance with whatever values are available.
+
     """
     return Settings(
         gemini_api_key=os.getenv("GEMINI_API_KEY", ""),

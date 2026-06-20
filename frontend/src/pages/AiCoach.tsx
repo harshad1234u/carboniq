@@ -101,7 +101,7 @@ export function AiCoach() {
           <Zap className="w-5 h-5 text-amber-500"/> Action Plan
         </h2>
         <div className="grid grid-cols-1 gap-4">
-          {data.recommendations.map((rec: any, idx: number) => (
+          {data.recommendations.map((rec: unknown, idx: number) => (
             <Card key={idx} className="bg-slate-900/50 border-slate-800 hover:border-emerald-500/30 transition-colors">
               <CardContent className="p-6">
                 <div className="flex flex-col md:flex-row justify-between gap-4">

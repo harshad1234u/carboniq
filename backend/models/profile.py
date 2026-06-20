@@ -30,7 +30,14 @@ class AuthSignup(BaseModel):
     @field_validator("email")
     @classmethod
     def validate_email_format(cls, v: str) -> str:
-        """Basic email format check."""
+        """Basic email format check.
+
+        Args:
+          v: str: 
+
+        Returns:
+
+        """
         import re
 
         pattern = r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
@@ -41,7 +48,14 @@ class AuthSignup(BaseModel):
     @field_validator("name")
     @classmethod
     def validate_name(cls, v: str) -> str:
-        """Ensure name is non-empty after stripping."""
+        """Ensure name is non-empty after stripping.
+
+        Args:
+          v: str: 
+
+        Returns:
+
+        """
         cleaned = v.strip()
         if not cleaned:
             raise ValueError("Name must not be empty.")
@@ -57,7 +71,14 @@ class AuthLogin(BaseModel):
     @field_validator("email")
     @classmethod
     def validate_email_format(cls, v: str) -> str:
-        """Basic email format check."""
+        """Basic email format check.
+
+        Args:
+          v: str: 
+
+        Returns:
+
+        """
         import re
 
         pattern = r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
@@ -91,7 +112,14 @@ class ProfileCreate(BaseModel):
     @field_validator("city")
     @classmethod
     def validate_city(cls, v: str) -> str:
-        """City must be a non-empty string."""
+        """City must be a non-empty string.
+
+        Args:
+          v: str: 
+
+        Returns:
+
+        """
         cleaned = v.strip()
         if not cleaned:
             raise ValueError("City must not be empty.")
@@ -100,7 +128,14 @@ class ProfileCreate(BaseModel):
     @field_validator("transport_type")
     @classmethod
     def validate_transport(cls, v: str) -> str:
-        """Transport type must be in the allowed set."""
+        """Transport type must be in the allowed set.
+
+        Args:
+          v: str: 
+
+        Returns:
+
+        """
         normalised = v.strip().lower()
         if normalised not in ALLOWED_TRANSPORT_TYPES:
             raise ValueError(
@@ -112,7 +147,14 @@ class ProfileCreate(BaseModel):
     @field_validator("diet_type")
     @classmethod
     def validate_diet(cls, v: str) -> str:
-        """Diet type must be in the allowed set."""
+        """Diet type must be in the allowed set.
+
+        Args:
+          v: str: 
+
+        Returns:
+
+        """
         normalised = v.strip().lower()
         if normalised not in ALLOWED_DIET_TYPES:
             raise ValueError(

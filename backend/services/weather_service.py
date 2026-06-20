@@ -32,10 +32,12 @@ def _default_weather(city: str) -> WeatherData:
     """Return a safe fallback weather response.
 
     Args:
-        city: The requested city name.
+      city: The requested city name
+      city: str: 
 
     Returns:
-        A ``WeatherData`` with moderate/neutral defaults.
+      A ``WeatherData`` with moderate/neutral defaults.
+
     """
     return WeatherData(
         city=city,

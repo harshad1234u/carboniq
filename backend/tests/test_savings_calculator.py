@@ -3,6 +3,7 @@ from models.ai_coach import Recommendation
 
 
 def test_transport_savings():
+    """ """
     recs = [
         Recommendation(
             title="Car to Bus",
@@ -21,6 +22,7 @@ def test_transport_savings():
 
 
 def test_zero_footprint():
+    """ """
     recs = [
         Recommendation(
             title="Reduce AC",
@@ -35,6 +37,7 @@ def test_zero_footprint():
 
 
 def test_savings_never_negative():
+    """ """
     recs = [
         Recommendation(
             title="Eat more meat",

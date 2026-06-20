@@ -9,15 +9,18 @@ client = TestClient(app, raise_server_exceptions=False)
 
 
 class _FakeUser:
+    """ """
     id = "test-user-uuid"
 
 
 def _override_auth():
+    """ """
     return _FakeUser()
 
 
 @pytest.fixture(autouse=True)
 def _patch_auth():
+    """ """
     from api.profile import get_current_user
 
     app.dependency_overrides[get_current_user] = _override_auth
@@ -26,15 +29,26 @@ def _patch_auth():
 
 
 class TestSignup:
+    """ """
     @patch("api.profile.get_supabase")
     def test_successful_signup(self, mock_sb):
+        """
+
+        Args:
+          mock_sb: 
+
+        Returns:
+
+        """
         from pydantic import BaseModel
 
         class MockUser(BaseModel):
+            """ """
             id: str = "new-user-id"
             email: str = "new@test.com"
 
         class MockResponse:
+            """ """
             user = MockUser()
 
         mock_sb.return_value.auth.sign_up.return_value = MockResponse()
@@ -51,6 +65,14 @@ class TestSignup:
 
     @patch("api.profile.get_supabase")
     def test_signup_failure(self, mock_sb):
+        """
+
+        Args:
+          mock_sb: 
+
+        Returns:
+
+        """
         mock_sb.return_value.auth.sign_up.side_effect = Exception("User already exists")
         resp = client.post(
             "/api/auth/signup",
@@ -64,18 +86,31 @@ class TestSignup:
 
 
 class TestLogin:
+    """ """
     @patch("api.profile.get_profile")
     @patch("api.profile.get_supabase")
     def test_login_with_complete_profile(self, mock_sb, mock_prof):
+        """
+
+        Args:
+          mock_sb: 
+          mock_prof: 
+
+        Returns:
+
+        """
         from pydantic import BaseModel
 
         class MockUser(BaseModel):
+            """ """
             id: str = "user-id"
 
         class MockSession(BaseModel):
+            """ """
             access_token: str = "tok"
 
         class MockResponse:
+            """ """
             user = MockUser()
             session = MockSession()
 
@@ -90,8 +125,17 @@ class TestLogin:
 
 
 class TestGetProfile:
+    """ """
     @patch("api.profile.get_profile")
     def test_get_existing_profile(self, mock_prof):
+        """
+
+        Args:
+          mock_prof: 
+
+        Returns:
+
+        """
         mock_prof.return_value = {
             "id": "test-user-uuid",
             "name": "Test",
@@ -109,16 +153,35 @@ class TestGetProfile:
 
     @patch("api.profile.get_profile")
     def test_get_missing_profile_returns_404(self, mock_prof):
+        """
+
+        Args:
+          mock_prof: 
+
+        Returns:
+
+        """
         mock_prof.return_value = None
         resp = client.get("/api/profile")
         assert resp.status_code == 404
 
 
 class TestUpdateProfile:
+    """ """
     @patch("api.profile.update_profile")
     @patch("api.profile.create_profile")
     @patch("api.profile.get_profile")
     def test_update_existing_profile(self, mock_get, mock_create, mock_update):
+        """
+
+        Args:
+          mock_get: 
+          mock_create: 
+          mock_update: 
+
+        Returns:
+
+        """
         mock_get.return_value = {"id": "test-user-uuid", "name": "Old"}
         mock_update.return_value = {
             "id": "test-user-uuid",
@@ -150,6 +213,16 @@ class TestUpdateProfile:
     def test_create_new_profile_if_none_exists(
         self, mock_get, mock_create, mock_update
     ):
+        """
+
+        Args:
+          mock_get: 
+          mock_create: 
+          mock_update: 
+
+        Returns:
+
+        """
         mock_get.return_value = None
         mock_create.return_value = {
             "id": "test-user-uuid",
@@ -179,6 +252,16 @@ class TestUpdateProfile:
     @patch("api.profile.create_profile")
     @patch("api.profile.get_profile")
     def test_update_failure_returns_400(self, mock_get, mock_create, mock_update):
+        """
+
+        Args:
+          mock_get: 
+          mock_create: 
+          mock_update: 
+
+        Returns:
+
+        """
         mock_get.return_value = {"id": "test-user-uuid"}
         mock_update.side_effect = Exception("DB error")
         resp = client.put(

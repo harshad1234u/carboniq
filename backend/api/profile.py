@@ -1,3 +1,4 @@
+"""Module docstring."""
 import os
 from fastapi import APIRouter, Depends, HTTPException, status, Request
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
@@ -14,6 +15,14 @@ security = HTTPBearer()
 
 
 def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(security)):
+    """
+
+    Args:
+      credentials: HTTPAuthorizationCredentials:  (Default value = Depends(security))
+
+    Returns:
+
+    """
     token = credentials.credentials
     client = get_supabase()
     try:
@@ -33,6 +42,7 @@ def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(securit
 @router.post("/auth/signup")
 @limiter.limit("5/minute")
 async def signup(request: Request, auth_data: AuthSignup) -> dict:
+    """Docstring."""
     client = get_supabase()
     try:
         response = client.auth.sign_up(
@@ -55,6 +65,7 @@ async def signup(request: Request, auth_data: AuthSignup) -> dict:
 @router.post("/auth/login")
 @limiter.limit("10/minute")
 async def login(request: Request, auth_data: AuthLogin) -> dict:
+    """Docstring."""
     client = get_supabase()
     try:
         response = client.auth.sign_in_with_password(
@@ -76,6 +87,7 @@ async def login(request: Request, auth_data: AuthLogin) -> dict:
 
 @router.get("/profile", response_model=ProfileResponse)
 async def get_user_profile(user=Depends(get_current_user)) -> dict:
+    """Docstring."""
     profile = get_profile(user.id)
     if not profile:
         raise HTTPException(status_code=404, detail="Profile not found")
@@ -86,6 +98,7 @@ async def get_user_profile(user=Depends(get_current_user)) -> dict:
 async def update_user_profile(
     profile_data: ProfileCreate, user=Depends(get_current_user)
 ) -> dict:
+    """Docstring."""
     try:
         data = profile_data.model_dump()
         if not data.get("email"):
