@@ -11,8 +11,10 @@ interface AuthContextType {
   loading: boolean;
   isProfileComplete: boolean | null;
   profile: Profile | null;
+  authError: string | null;
   setIsProfileComplete: (complete: boolean) => void;
   setProfile: (profile: Profile | null) => void;
+  refreshProfile: () => Promise<void>;
   signInWithGoogle: () => Promise<void>;
   signOut: () => Promise<void>;
 }
@@ -25,6 +27,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true);
   const [isProfileComplete, setIsProfileComplete] = useState<boolean | null>(null);
   const [profile, setProfile] = useState<Profile | null>(null);
+  const [authError, setAuthError] = useState<string | null>(null);
 
   const hasCheckedProfile = React.useRef<string | null>(null);
 
@@ -59,6 +62,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setIsProfileComplete(null);
         setProfile(null);
         setLoading(false);
+        setAuthError(null);
       }
     });
 
@@ -67,23 +71,39 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const checkProfile = async (userId: string) => {
     console.log("Profile lookup started for", userId);
+    setLoading(true);
+    setAuthError(null);
+    
+    // Safety timeout of 10s
+    const timeoutPromise = new Promise((_, reject) => {
+      setTimeout(() => reject(new Error('Profile request timed out')), 10000);
+    });
+
     try {
-      const prof = await api.get('/profile');
+      const prof = await Promise.race([api.get('/profile'), timeoutPromise]) as Profile;
       console.log("Profile found");
       setProfile(prof);
       setIsProfileComplete(!!prof.city);
     } catch (err: any) {
       if (err.message === 'Profile not found' || err.message?.includes('not found') || err.message?.includes('404')) {
-        console.log("Profile missing");
+        console.log("Profile missing - redirecting to onboarding");
         setIsProfileComplete(false);
         setProfile(null);
+        setAuthError(null);
       } else {
         console.error('Error checking profile:', err);
-        setIsProfileComplete(false); 
+        setIsProfileComplete(null); 
         setProfile(null);
+        setAuthError(err.message || "Failed to load profile");
       }
     } finally {
       setLoading(false);
+    }
+  };
+
+  const refreshProfile = async () => {
+    if (user) {
+      await checkProfile(user.id);
     }
   };
 
@@ -103,7 +123,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, session, loading, isProfileComplete, profile, setIsProfileComplete, setProfile, signInWithGoogle, signOut }}>
+    <AuthContext.Provider value={{ user, session, loading, isProfileComplete, profile, authError, setIsProfileComplete, setProfile, refreshProfile, signInWithGoogle, signOut }}>
       {children}
     </AuthContext.Provider>
   );

@@ -26,7 +26,14 @@ export function CarbonScoreGauge({ score }: CarbonScoreGaugeProps) {
   const dashArray = `${circumference * 0.75} ${circumference * 0.25}`;
 
   return (
-    <div className="flex flex-col items-center justify-center relative p-6">
+    <div 
+      className="flex flex-col items-center justify-center relative p-6"
+      role="meter" 
+      aria-valuenow={animatedScore} 
+      aria-valuemin={0} 
+      aria-valuemax={100} 
+      aria-label="Carbon Score Gauge"
+    >
       <div className="relative w-48 h-48">
         <svg className="w-full h-full transform -rotate-135" viewBox="0 0 140 140">
           {/* Background Track */}

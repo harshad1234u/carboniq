@@ -8,7 +8,7 @@ import { VEHICLE_TYPES, DIET_TYPES } from '../utils/constants';
 import { MapPin, Users, Car, Utensils } from 'lucide-react';
 
 export function Onboarding() {
-  const { user, isProfileComplete, setIsProfileComplete } = useAuth();
+  const { user, isProfileComplete, refreshProfile } = useAuth();
   const { updateProfile } = useProfile();
   const navigate = useNavigate();
   
@@ -31,13 +31,14 @@ export function Onboarding() {
     console.log("Creating profile");
     try {
       await updateProfile(formData);
-      console.log("Profile created successfully");
-      console.log("Redirecting to dashboard");
-      if (setIsProfileComplete) setIsProfileComplete(true);
+      console.log("Profile created successfully via API");
+      
+      await refreshProfile();
+      console.log("Profile row verified via global state refresh");
+      
       navigate('/dashboard');
     } catch (err: any) {
       alert(err.message || 'Failed to save profile');
-    } finally {
       setLoading(false);
     }
   };

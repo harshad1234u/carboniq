@@ -17,18 +17,20 @@ interface ChallengeProps {
 
 export function ChallengeCard({ challenge, onComplete, isLoading }: ChallengeProps) {
   return (
-    <Card className={cn(
+    <Card 
+      role="article"
+      className={cn(
       "transition-all duration-300",
       challenge.is_completed 
         ? "bg-emerald-950/20 border-emerald-500/30 opacity-80" 
         : "bg-slate-900/50 border-slate-800 hover:border-slate-700"
     )}>
       <CardContent className="p-5 flex items-start gap-4">
-        <div className="shrink-0 mt-1">
+        <div role="status" className="shrink-0 mt-1">
           {challenge.is_completed ? (
-            <CheckCircle2 className="w-6 h-6 text-emerald-500" />
+            <CheckCircle2 className="w-6 h-6 text-emerald-500" aria-label="Completed" />
           ) : (
-            <Circle className="w-6 h-6 text-slate-500" />
+            <Circle className="w-6 h-6 text-slate-500" aria-label="Incomplete" />
           )}
         </div>
         <div className="flex-1 min-w-0">
@@ -52,6 +54,7 @@ export function ChallengeCard({ challenge, onComplete, isLoading }: ChallengePro
               className="w-full sm:w-auto border-emerald-500/30 text-emerald-500 hover:bg-emerald-500/10"
               onClick={() => onComplete(challenge.id)}
               disabled={isLoading}
+              aria-label={`Mark ${challenge.title} as complete`}
             >
               {isLoading ? "Completing..." : "Mark Complete"}
             </Button>
